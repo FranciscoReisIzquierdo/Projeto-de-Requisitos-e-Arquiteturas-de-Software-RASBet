@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RASBET Specialist Page</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script> 
+    
+</head>
+<body>
+    <section id="header">
+        <nav>
+            <a href="#" class="logo">
+                <img src="img\logo.png" alt="logo">
+            </a>
+            <ul class="menu">
+                <li><a href="#" onclick="location.replace('page_especialista.html');" class="active">Home</a></li>
+                <li><a href="#" onclick="localStorage.removeItem('username');location.replace('index.html');">Logout</a></li>
+            </ul>
+        </nav>
+    </section>
+
+    <section id="games">
+        <form id="form_aposta" class="form_aposta" method="post">
+            <h1> Jogos Atuais </h1>
+            <script type="text/babel">
+                var socket = new WebSocket("ws://localhost:33333/");
+                let username = localStorage.getItem("username");
+                var formObject =  {"listaJogos": [username,'Futebol']};
+        
+                socket.addEventListener('open', (event) => {
+                    socket.send(JSON.stringify(formObject));
+                });
+  
+  
+  
+                socket.addEventListener('message', (event) => {
+                    console.log('Message from server ', event.data);
+                    
+  
+                    let obj = JSON.parse(event.data);
+                    
+                    let obj_plus = JSON.parse(JSON.stringify(obj));
+                    //console.log('Message from server ', dados);
+                    
+                    var odd_list =[];
+                    for(let i = 0; i<obj_plus.length;i++){
+                      obj_plus[i].odd_home = obj_plus[i].oddHome;
+                      obj_plus[i].odd_away = obj_plus[i].oddTie;
+                      obj_plus[i].odd_draw = obj_plus[i].oddAway;
+                      odd_list[i] = [];
+                    }
+
+                    console.log(odd_list);
+                    class App extends React.Component {
+                        constructor(props) {
+                          super(props)
+                          this.state = { 
+                             formValues: JSON.parse(JSON.stringify(obj_plus)),
+                             formBets: [],
+                             formOdds: odd_list
+                           };
+
+                        }
+                        
+                        handleChange(i, e,mode) {
+                          let formValues = this.state.formValues;
+
+                          var allIds = this.state.formBets.map(obj=>obj.id);
+                          console.log(allIds);
+                          switch (mode) {
+                            case 1:
+                              if(e.target.value == "") 
+                                formValues[i].odd_home= formValues[i].oddHome;
+                              else
+                                formValues[i].odd_home= e.target.value;
+                              break;
+                            case 2:
+                              if(e.target.value == "") 
+                                formValues[i].odd_draw= formValues[i].oddTie;
+                              else
+                                formValues[i].odd_draw = e.target.value;
+    
+                              break;
+                            case 3:
+                              if(e.target.value == "") 
+                                formValues[i].odd_away= formValues[i].oddAway;
+                              else
+                                formValues[i].odd_away = e.target.value;
+                              break;
+                            default:
+                              break;
+                          }
+                        
+    
+                          this.setState({ formValues });
+
+                        }
+                      
+                        atualizarOdd(i) {
+                          let aposta = this.state.formValues[i];
+                          let id = aposta.id;
+                          let odd_home = aposta.odd_home ;
+                          let odd_away = aposta.odd_away ;
+                          let odd_draw = aposta.odd_draw;
+                          console.log("Vou atualizar a odd "+ {id} +"com as seguintes odds: " +odd_home + ", " + odd_away + ", " + odd_draw);
+                          var socket = new WebSocket("ws://localhost:33333/");
+                          this.state.formValues[i].oddHome =odd_home;
+                          this.state.formValues[i].oddTie  =odd_draw;
+                          this.state.formValues[i].oddAway = odd_away; 
+                          var formObject =  {"registarOdd": [localStorage.getItem("username"),id,odd_home,odd_draw,odd_away]};
+
+                          socket.addEventListener('open', (event) => {
+                            socket.send(JSON.stringify(formObject));
+                          });
+
+                          socket.addEventListener('message', (event) => {
+                            let mensagem = JSON.parse(event.data);
+                            
+                            if(mensagem.validate){
+                                alert("Aposta Guardada com sucesso")
+                                this.setState(({
+                                  formValues: this.state.formValues,
+                                  formBets: this.state.formBets,
+                                  formOdds: this.state.formOdds
+                                }));
+                            }
+                            else{
+                              alert("Ocorreu um erro, tente novamente");
+                            }
+                            
+                          });
+
+                        }
+
+                        addOddFormFields(i) {
+                            var socket = new WebSocket("ws://localhost:33333/");
+                            
+                            var formObject =  {"getOdds": [username,this.state.formValues[i].id]};
+                    
+                            socket.addEventListener('open', (event) => {
+                                socket.send(JSON.stringify(formObject));
+                            });
+
+                            var odds = this.state.formOdds;
+
+                            socket.addEventListener('message', (event) => {
+                                console.log('Odds do servidor: ', event.data);
+
+                            
+                            odds[i] = JSON.parse(event.data);
+                            console.log(odds);
+                            this.setState(({
+                                formOdds: odds,
+
+                              }))
+                            });
+                          }
+                      
+                        removeOddFormFields(i) {
+                            var odds = this.state.formOdds;
+                            odds[i] = [];
+                            this.setState({ odds });
+                        }
+
+                        removeFormFields(i) {
+                            let formBets = this.state.formBets;
+                            formBets.splice(i, 1);
+                            this.setState({ formBets });
+                          }
+                      
+                        
+                      
+                        render() {
+                          return (
+                              <form  onSubmit={this.handleSubmit}>
+                                
+                                {this.state.formValues.map((element, index) => (
+                                  <div className="form-inline" key={index}>
+
+                                    <li>
+                                      <div className="game">
+                                        {element.homeTeam} x {element.awayTeam} 
+                                        <p><small> {element.commenceTime.date.day}/{element.commenceTime.date.month}/{element.commenceTime.date.year} {element.commenceTime.time.hour}:{element.commenceTime.time.minute}:{element.commenceTime.time.second} </small></p>
+                                      </div>
+                                    <div class="buttons">
+                                      <input type="number" name="homeTeam" placeholder={"Odd casa "+ element.oddHome }   onChange={e => this.handleChange(index, e,1)} />
+                                      <input type="number" name="draw" placeholder={"Odd empate "+element.oddTie}   onChange={e => this.handleChange(index, e,2)} />
+                                      <input type="number" name="awayTeam" placeholder={"Odd visitante "+element.oddAway}   onChange={e => this.handleChange(index, e,3)} />    
+                                      <button className="confirm_odd" type="button" onClick={() => this.atualizarOdd(index)}>Atualizar Odd</button>
+                                    </div>
+                                    </li>
+
+                                    <div>
+                                      {
+                                        this.state.formOdds[index].length == 0 ? 
+                                      <button className="button_add_odd" type="button" onClick={() => this.addOddFormFields(index)}>+Info</button>
+                                      :null
+                                     }
+                                      {
+                                        this.state.formOdds[index].length > 0 ? 
+                                        <button className="button_remove_odd" type="button" onClick={() => this.removeOddFormFields(index)}>-Info</button>
+
+                                        :null
+                                      }
+
+                                   </div>
+
+                                    {this.state.formOdds[index].map((element2, index2) => (
+                                        
+                                            
+                                        
+                                            <div className="odds" key={index2}> {element2.key} {"-> "} 
+                                                {element2.outcomes.h2h[0].equipa}: {element2.outcomes.h2h[0].outcome} { }
+                                                {element2.outcomes.h2h[1].equipa}: {element2.outcomes.h2h[1].outcome} { }
+                                                {element2.outcomes.h2h[2].equipa}: {element2.outcomes.h2h[2].outcome}   
+                                            </div>
+                                          
+                                        
+                                    ))}
+
+
+                                  </div>
+                                ))}
+                              
+                            </form>
+                          );
+                        }
+                      }
+                      
+                      ReactDOM.render(<App />, document.getElementById('container'));
+                });
+           
+  
+            </script>
+          <div id="container" class="container">
+              <!-- This element's contents will be replaced with your component. -->
+          </div>
+        </div>
+    </section>
+</body>
+</html>

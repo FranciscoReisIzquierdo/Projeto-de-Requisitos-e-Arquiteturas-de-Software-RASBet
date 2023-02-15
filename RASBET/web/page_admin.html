@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RASBET Admin Page</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script> 
+    
+</head>
+<body>
+    <section id="header">
+        <nav>
+            <a href="#" class="logo">
+                <img src="img\logo.png" alt="logo">
+            </a>
+            <ul class="menu">
+                <li><a href="#" onclick="location.replace('page_admin.html');" class="active" >Home</a></li>
+                <li><a href="#" onclick="location.replace('criarNotificacao.html');">Notificações</a></li>
+                <li><a href="#" onclick="localStorage.removeItem('username');location.replace('index.html');">Logout</a></li>
+            </ul>
+        </nav>
+    </section>
+
+    <section id="games">
+        <form id="form_aposta" class="form_aposta" method="post">
+            <h1> Jogos Atuais </h1>
+            <script type="text/babel">
+                var socket = new WebSocket("ws://localhost:33333/");
+                let username = localStorage.getItem("username");
+                var formObject =  {"listaJogos": [username,'Futebol']};
+        
+                socket.addEventListener('open', (event) => {
+                    socket.send(JSON.stringify(formObject));
+                });
+  
+  
+  
+                socket.addEventListener('message', (event) => {
+                    console.log('Message from server ', event.data);
+                    
+  
+                    let obj = JSON.parse(event.data);
+                
+                    for(let i = 0;i<obj.length;i++){
+                      obj[i].fazerPromo = false;
+                      obj[i].montante = 0.0;
+                      obj[i].alterarPromo = false;
+                    }
+                    
+
+                    
+                    class App extends React.Component {
+                        constructor(props) {
+                            super(props)
+                            this.state = { 
+                                formValues: obj
+                            };
+                        }
+                        
+
+                      
+                        confirmarEstado(i) {
+                          let aposta = this.state.formValues[i];
+                          let estado = aposta.estado;
+                          let id = aposta.id;
+
+                          
+                          var socket = new WebSocket("ws://localhost:33333/");
+
+                          var formObject =  {"alterarEstadoAposta": [localStorage.getItem("username"),id,estado]};
+
+                          socket.addEventListener('open', (event) => {
+                            socket.send(JSON.stringify(formObject));
+                          });
+
+                          socket.addEventListener('message', (event) => {
+                            let mensagem = JSON.parse(event.data);
+                            
+                            if(mensagem.validate){
+                                alert("Estado da Partida Alterada com Sucesso!")
+                                if(estado == "fechada")
+                                  this.state.formValues.splice(i, 1);
+                                this.setState(({
+                                  formValues: this.state.formValues
+                                }));
+                            }
+                            else{
+                              alert("Ocorreu um erro, tente novamente");
+                            }
+                          });
+                        }
+
+                        atualizarEstado(i,new_estado) {
+                            let new_partidas = this.state.formValues;
+                            new_partidas[i].estado = new_estado;
+                            this.setState(({
+                                formValues: new_partidas
+                              }));
+                        }
+                        fazerPromocao(i) {
+                          let partida = this.state.formValues;
+                          partida[i].fazerPromo = true;
+                          this.setState(({
+                            formValues: partida
+                          }));
+                        }
+
+                        cancelarPromocao(i) {
+                          let partida = this.state.formValues;
+                          partida[i].fazerPromo = false;
+                          this.setState(({
+                            formValues: partida
+                          }));
+                        }
+
+                        handleChange(e,index) {
+                          let formValues = this.state.formValues;
+                          
+                          if(e.target.value == "")
+                            formValues[index].montante = 0.0;
+                          else {
+                            formValues[index].montante = e.target.value;
+                          }
+                          this.setState({ 
+                            formValues
+                          });
+                        }
+
+                        guardarPromocao(i){
+                            let partida = this.state.formValues;
+                            
+                            let id = this.state.formValues[i].id;
+                            let montante = this.state.formValues[i].montante;
+                            if(montante == 0.0) {
+                              alert("Não é possível fazer uma promoção de 0.0");
+                              return;
+                            }else{
+                              var socket = new WebSocket("ws://localhost:33333/");
+
+                            var formObject =  {"criarPromocao": [localStorage.getItem("username"),id,montante]};
+
+                            socket.addEventListener('open', (event) => {
+                              socket.send(JSON.stringify(formObject));
+                            });
+
+                            socket.addEventListener('message', (event) => {
+                              let mensagem = JSON.parse(event.data);
+                              
+                              if(mensagem.validate){
+                                  alert("Promoção realizada com sucesso!");
+                                  partida[i].promocao = montante;
+                                  partida[i].fazerPromo = false;
+                                  this.setState(({
+                                    formValues: partida
+                                  }));
+                              }
+                              else{
+                                alert("Ocorreu um erro, tente novamente");
+                              }
+                            });
+                            }
+                          }
+
+                          removerPromocao(i){
+                            let partida = this.state.formValues;
+                            let id = this.state.formValues[i].id;
+                            var socket = new WebSocket("ws://localhost:33333/");
+                            var formObject =  {"criarPromocao": [localStorage.getItem("username"),id,0.0]};
+                            
+                            socket.addEventListener('open', (event) => {
+                              socket.send(JSON.stringify(formObject));
+                            });
+
+                            socket.addEventListener('message', (event) => {
+                              let mensagem = JSON.parse(event.data);
+                              
+                              if(mensagem.validate){
+                                  alert("Remoção de Promoção realizada com sucesso!");
+                                  partida[i].promocao = 0.0;
+                                  this.setState(({
+                                    formValues: partida
+                                  }));
+                              }
+                              else{
+                                alert("Ocorreu um erro, tente novamente");
+                              }
+                            });
+                          }
+
+                          alterarPromocao(i){
+                            let partidas = this.state.formValues;
+                            partidas[i].fazerPromo = true;
+                            partidas[i].alterarPromo = true;
+                            this.setState(({
+                              formValues: partidas
+                            }));
+                          }
+
+                        render() {
+                          return (
+                              <form  onSubmit={this.handleSubmit}>
+                                
+                                {this.state.formValues.map((element, index) => (
+                                  <div className="form-inline" key={index} color="blue">
+
+                                    <li>
+                                      <div className="game">
+                                        {element.homeTeam} x {element.awayTeam}  <b> {
+                                          element.estado=="aberta" ? <u className='linhaVerde'> {element.estado}</u> : 
+                                          ( element.estado=="fechada" ?  <u className='linhaVermelha'> {element.estado}</u> :
+                                          <u className='linhaAmarela'> {element.estado}</u>)
+                                      } </b>
+                                      <p><small> {element.commenceTime.date.day}/{element.commenceTime.date.month}/{element.commenceTime.date.year} {element.commenceTime.time.hour}:{element.commenceTime.time.minute}:{element.commenceTime.time.second} </small></p>
+                                      </div>
+                                    <div class="buttons" >
+                                      <button className="btn_aberto" type="button" onClick={() => this.atualizarEstado(index,"aberta")}>Abrir</button> 
+                                      <button className="btn_suspenso" type="button" onClick={() => this.atualizarEstado(index,"suspensa")}>Suspender</button> 
+                                      <button className="btn_fechado" type="button" onClick={() => this.atualizarEstado(index,"fechada")}>Fechar</button> 
+                                      <button className="confirm_estado" type="button" onClick={() => this.confirmarEstado(index)}>Confirmar</button>
+                                    </div>
+                                    </li>
+
+                                    <div>
+                                      {
+                                        element.promocao == 0.0 ?
+                                      <u className='linhaDourada' onClick={() => this.fazerPromocao(index)}>Promoção</u>
+                                      : null
+                                      }
+                                      {
+                                        element.promocao != 0.0 && element.fazerPromo ==false ?
+                                      [
+                                      
+                                      <p>Esta partida já tem uma promoção de {element.promocao}</p>,
+                                      <u className='linhaVermelhaPromo' onClick={() => this.removerPromocao(index)}>Remover Promoção</u>,"   ",
+                                      <u className='linhaVerdePromo' onClick={() => this.alterarPromocao(index)}>Alterar Promoção</u>]
+                                      : null
+                                      }
+                                      
+                                      {
+                                        element.fazerPromo && element.alterarPromo  ? 
+                                        [
+                                        
+                                        <p>Antiga promoção {element.promocao}</p>,
+                                        <input type="number" placeholder=" Montante " id="quantity" onChange={e => this.handleChange(e,index)} />,
+                                        <u className='linhaAzulPromo' onClick={() => this.guardarPromocao(index)}>Guardar Promoção</u>,"   ",
+                                        <u className='linhaVermelhaPromo' onClick={() => this.cancelarPromocao(index)}>Cancelar Promoção</u> 
+                                        ]
+                                        :null
+                                      }
+                                      
+                                      {
+                                        element.fazerPromo && element.promocao == 0.0 ? 
+                                        [
+                                        <input type="number" placeholder=" Montante " id="quantity" onChange={e => this.handleChange(e,index)} />,
+                                        <u className='linhaAzulPromo' onClick={() => this.guardarPromocao(index)}>Guardar Promoção</u>,"   ",
+                                        <u className='linhaVermelhaPromo' onClick={() => this.cancelarPromocao(index)}>Cancelar Promoção</u> 
+                                        ]
+                                        :null
+                                      }
+                          
+                                      
+                                    </div>
+
+                                  </div>
+                                ))}
+                              
+                            </form>
+                          );
+                        }
+                      }
+                      
+                      ReactDOM.render(<App />, document.getElementById('container'));
+                });
+           
+  
+            </script>
+  
+  
+            <div id="container">
+  
+            </div>
+
+            <div id="apostagens">
+                <div id="container" class="container">
+                    <!-- This element's contents will be replaced with your component. -->
+                </div>
+              
+
+            </div>
+
+        </div>
+
+    </section>
+
+    
+    
+</body>
+</html>

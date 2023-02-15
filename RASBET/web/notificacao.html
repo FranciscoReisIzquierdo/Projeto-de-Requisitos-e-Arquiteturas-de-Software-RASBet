@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>RASBET Notifications</title>
+		<link rel="stylesheet" href="css/style.css"/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script> 
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	</head>
+	<body>
+		<section id="header">
+			<nav>
+				<a href="#" class="logo">
+				  <img src="img\logo.png" alt="logo">
+				</a>
+				<ul class="menu">
+					<li><a href="#" onclick="location.replace('page_apostador.html');"class="active">Home</a></li>
+					<li><a href="#" onclick="location.replace('about.html');">About</a></li>
+					<li><a href="#" onclick="location.replace('perfil.html');">Perfil</a></li>
+					<li><a href="#" onclick="localStorage.removeItem('username');location.replace('index.html');">Logout</a></li>
+					<button type="button" class="icon-button-activate" onclick="location.replace('notificacao.html');" >
+						<span class="material-icons">notifications</span>
+					</button>
+				</ul>
+			</nav>
+		</section>
+        <section id="games">
+            <form id="form_aposta" class="form_aposta" method="post">
+                <h1>Notificações</h1>
+                <script type="text/babel">
+                    const socket = new WebSocket("ws://localhost:33333/");
+                    let username = localStorage.getItem("username");
+                    var formObject =  {"getNotificacoes": [username]};
+            
+                    socket.addEventListener('open', (event) => {
+                        socket.send(JSON.stringify(formObject));
+                    });
+      
+      
+      
+                    socket.addEventListener('message', (event) => {
+                        console.log('Message from server ', event.data);
+                        let obj = JSON.parse(event.data);
+                        
+    
+                        
+    
+                        const Notificacao = ({titulo,mensagem,viewed,day,  month, year, hour,minute,second}) => (
+                            
+                            <div className="notificação"> 
+                                <h1> {titulo} </h1>
+                                <p>{mensagem}</p>
+                                <p><small> {day}/{month}/{year} {hour}:{minute}:{second} </small></p>
+                            </div>
+                        )
+                        
+                        const NovaNotificacao = ({titulo,mensagem,day,  month, year, hour,minute,second}) => (
+                            
+                            <div className="notificação_nova"> 
+                                <h1> {titulo} </h1>
+                                <p>{mensagem}</p>
+                                <p><small> {day}/{month}/{year} {hour}:{minute}:{second} </small></p>
+                            </div>
+                        )
+      
+                        var Hello = React.createClass({
+                        
+                            
+
+                            renderUsers: function() {
+                                const jogosList = []; 
+                                for(let j = 0;j<obj.length;j++){
+                                    if(obj[j].viewed)
+                                        jogosList.push(<Notificacao titulo={obj[j].title} mensagem={obj[j].mensagem} day={obj[j].dataHora.date.day}  month={obj[j].dataHora.date.month} year={obj[j].dataHora.date.year} hour={obj[j].dataHora.time.hour}minute={obj[j].dataHora.time.minute}second={obj[j].dataHora.time.second}/>);
+                                    else
+                                    jogosList.push(<NovaNotificacao titulo={obj[j].title} mensagem={obj[j].mensagem} day={obj[j].dataHora.date.day}  month={obj[j].dataHora.date.month} year={obj[j].dataHora.date.year} hour={obj[j].dataHora.time.hour}minute={obj[j].dataHora.time.minute}second={obj[j].dataHora.time.second}/>);
+                                    }
+                                return jogosList;
+                            },
+    
+                            render: function() {
+                                return  <div className="notificacaoL">
+                                            {this.renderUsers()}
+                                        </div>;
+                            }
+                        });
+                        
+                        ReactDOM.render(<Hello />, document.getElementById('container4'));
+                      });
+                </script>
+                <div id="container4" class="container4">
+                    <!-- This element's contents will be replaced with your component. -->
+                </div>
+            </form>
+        </section>
+	</body>
+</html>

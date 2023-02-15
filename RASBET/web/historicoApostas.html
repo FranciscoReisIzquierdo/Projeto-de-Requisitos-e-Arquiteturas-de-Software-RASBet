@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bet Historic</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+</head>
+<body>
+    <section id="header">
+        <nav>
+            <a href="#" class="logo">
+              <img src="img\logo.png" alt="logo">
+            </a>
+            
+            <script type="text/babel">
+                    
+                var socket2 = new WebSocket("ws://localhost:33333/");
+                let username2 = localStorage.getItem("username");
+                var formObject2 =  {"getNumeroNotificacoes": [username2]};
+                
+                socket2.addEventListener('open', (event) => {
+                    socket2.send(JSON.stringify(formObject2));
+                    
+                });
+                
+                
+                
+                socket2.addEventListener('message', (event2) => {
+                    
+                    
+                
+                    let numeroNotificacoes = JSON.parse(event2.data);
+                    console.log(numeroNotificacoes);
+                    
+                    
+
+
+
+                  class App extends React.Component {
+                    constructor(props) {
+                        super(props)
+                        this.state = { 
+                           novasNotificacoes: numeroNotificacoes.num_notif
+                         };
+
+                      }
+
+                      irNotificacoes(){
+                        location.replace('notificacao.html');
+                      }
+                      irHome(){
+                        location.replace('page_apostador.html');
+                      }
+                      irAbout(){
+                        location.replace('about.html');
+                      }
+                      irPerfil(){
+                        location.replace('perfil.html');
+                      }
+                      irLogout(){
+                        localStorage.removeItem('username');
+                        location.replace('index.html');
+                      }
+                    
+                      render() {
+                
+                        return (
+                        <ul className="menu" >
+                            <li><a href="#" onclick="location.replace('page_apostador.html');" onClick={() => this.irHome()} >Home</a></li>
+                            <li><a href="#" onclick="location.replace('about.html');" onClick={() => this.irAbout()} >About</a></li>
+                            <li><a href="#" onclick="location.replace('perfil.html');" onClick={() => this.irPerfil()} className="active">Perfil</a></li>
+                            <li><a href="#" onclick="localStorage.removeItem('username');location.replace('index.html');" onClick={() => this.irLogout()} >Logout</a></li>
+                            <button type="button" className="icon-button" onClick={() => this.irNotificacoes()}  >
+                                <span className="material-icons">notifications</span>
+                                {this.state.novasNotificacoes != 0 
+                                    ? <span className="icon-button__badge">{this.state.novasNotificacoes}</span>
+                                    :null
+                                }
+                                
+                            </button>
+                        </ul>);
+                      }
+                    }
+                    
+                    ReactDOM.render(<App />, document.getElementById('menu3'));
+                });
+            </script>
+            <div class="menu3" id="menu3">
+                
+            </div>
+        </nav>
+    </section>
+
+    <section id="games">
+        <form id="form_aposta" class="form_aposta" method="post">
+            <h1> Histórico de apostas</h1>
+            <script type="text/babel">
+                const socket = new WebSocket("ws://localhost:33333/");
+          
+                var formObject =  {"historicoApostas": [localStorage.getItem("username")]};
+        
+                socket.addEventListener('open', (event) => {
+                    socket.send(JSON.stringify(formObject));
+                });
+  
+  
+  
+                socket.addEventListener('message', (event) => {
+                    console.log('Message from server ', event.data);
+                    
+  
+                    let obj = JSON.parse(event.data);
+
+                    let obj2 =  JSON.parse(obj.apostas);
+                    let obj3 =  JSON.parse(obj.jogos);
+                    console.log(JSON.stringify(obj2));
+                    console.log(JSON.stringify(obj2));
+                    console.log(JSON.stringify(obj2[0]));
+                    console.log(JSON.stringify(obj2[1]));
+                    console.log(JSON.stringify(obj3));
+                    console.log(JSON.stringify(obj3[0]));
+                    console.log(JSON.stringify(obj3[1]));
+
+                    
+                    const Historico = ({tipo,odd,montante,won,day,  month, year, hour,minute,second}) => (
+                        <div className="histórico"> 
+                           Tipo : {tipo} Odd: {odd}  Montante: {montante}€   Won:{won}  Data: {day} / {month} / {year} {hour}:{minute}:{second}
+                        </div>
+                    )
+                    const Jogo = ({home,away,predicti}) => (
+                        <div className="jogo"> 
+                        Jogo : {home}         Vs.        {away}     Prediction:{predicti} 
+                        </div>
+                    )
+                    
+  
+                    var Hello = React.createClass({
+                    
+                        renderUsers: function() {
+                            const histList = [];
+                            
+                            for(let i = 0; i < obj2.length; i++) {
+                                var tipo;
+                                var jogosList = [];
+                                if(obj2[i].tipo== 0) {
+                                    tipo = "Simples";
+                                }
+                                else tipo = "Múltipla";
+                                var complete = "" ;
+                                for(let j = 0;j<obj3[i].length;j++){
+                                    jogosList.push(<Jogo home={obj3[i][j].homeTeam} away={obj3[i][j].awayTeam} predicti={obj2[i].predictions[j]}/>);
+
+                                    
+                                    
+                                }
+                                if(obj2[i].completed == false) complete = "TBD";
+                                else{
+                                    if(obj2[i].won == false) complete = "Won";
+                                    else complete = "Lost";
+                                }
+                                histList.push(<Historico  tipo={tipo} odd={obj2[i].odd} montante={obj2[i].montante}won={complete} day={obj2[i].data.date.day}  month={obj2[i].data.date.month} year={obj2[i].data.date.year} hour={obj2[i].data.time.hour}minute={obj2[i].data.time.minute}second={obj2[i].data.time.second} />,jogosList);
+                                
+                            }
+                            return histList;
+                        },
+                        render: function() {
+                            return <div>
+                                {this.renderUsers()}
+                            </div>;
+                        }
+                    });
+                    
+                    ReactDOM.render(<Hello />, document.getElementById('container'));
+                  });
+            </script>
+  
+  
+            <div id="container">
+  
+            </div>
+
+            <div id="apostagens">
+                <div id="container" class="container">
+                    <!-- This element's contents will be replaced with your component. -->
+                </div>
+                
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+    
+    
+</body>
+</html>

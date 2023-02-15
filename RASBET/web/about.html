@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <title>About Page</title>
+    <link rel="stylesheet" href="css/style.css" >
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script> 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <section id="header">
+        <nav>
+            <a href="#" class="logo">
+                <img src="img\logo.png" alt="logo" onclick="location.replace('page_apostador.html');">
+            </a>
+            <script type="text/babel">
+						
+                var socket2 = new WebSocket("ws://localhost:33333/");
+                let username2 = localStorage.getItem("username");
+                var formObject2 =  {"getNumeroNotificacoes": [username2]};
+                
+                socket2.addEventListener('open', (event) => {
+                    socket2.send(JSON.stringify(formObject2));
+                    
+                });
+
+                socket2.addEventListener('message', (event2) => {
+
+                    let numeroNotificacoes = JSON.parse(event2.data);
+                    console.log(numeroNotificacoes);
+
+                  class App extends React.Component {
+                    constructor(props) {
+                        super(props)
+                        this.state = { 
+                           novasNotificacoes: numeroNotificacoes.num_notif
+                         };
+
+                      }
+
+                      irNotificacoes(){
+                        location.replace('notificacao.html');
+                      }
+                      irHome(){
+                        location.replace('page_apostador.html');
+                      }
+                      irAbout(){
+                        location.replace('about.html');
+                      }
+                      irPerfil(){
+                        location.replace('perfil.html');
+                      }
+                      irLogout(){
+                        localStorage.removeItem('username');
+                        location.replace('index.html');
+                      }
+                    
+                      render() {
+                
+                        return (
+                        <ul className="menu" >
+                            <li><a href="#" onclick="location.replace('page_apostador.html');" onClick={() => this.irHome()} >Home</a></li>
+                            <li><a href="#" onclick="location.replace('about.html');" onClick={() => this.irAbout()} className="active" >About</a></li>
+                            <li><a href="#" onclick="location.replace('perfil.html');" onClick={() => this.irPerfil()} >Perfil</a></li>
+                            <li><a href="#" onclick="localStorage.removeItem('username');location.replace('index.html');" onClick={() => this.irLogout()} >Logout</a></li>
+                            <button type="button" className="icon-button" onClick={() => this.irNotificacoes()}  >
+                                <span className="material-icons">notifications</span>
+                                {this.state.novasNotificacoes != 0 
+                                    ? <span className="icon-button__badge">{this.state.novasNotificacoes}</span>
+                                    :null
+                                }
+                                
+                            </button>
+                        </ul>);
+                      }
+                    }
+                    ReactDOM.render(<App />, document.getElementById('menu3'));
+                });
+            </script>
+
+            <div class="menu3" id="menu3">
+                
+            </div>
+        </nav>
+    </section>
+    <div class="about-page">
+      <h1>Termos e condições</h1> 
+      <h3>Versão: 1.8</h1> 
+      <h3>Data de Publicação: 02 de dezembro de 2022</h1> 
+      <p class="about-text">Por favor, leia atentamente estes Termos e Condições de utilização do Site, da Plataforma de Jogo e do Software que são vinculativos entre si - o Jogador - e a sociedade SAS Apostas Sociais – Jogos e Apostas Online, SA (doravante "SAS"), sociedade com sede na Avenida Álvares Cabral, n.º 61, 1.º andar, 1250-017 Lisboa, pessoa coletiva n.º 514201843, que atua sob a marca comercial "RASBET.pt" (operador com o número da licença 13 para exploração de apostas desportivas à cota atribuída pelo Instituto de Turismo I.P. (doravante o "ACORDO" ou "CONTRATO").
+
+Atenção: O Site é interdito a menores de 18 anos
+
+Por favor, certifique-se de que entende integralmente o conteúdo deste Acordo, antes de aceitar os seus termos.
+
+Ao clicar no botão "Registar" está a celebrar um contrato com a SAS e reconhece que leu e que aceita: 
+
+a)  Os Termos e Condições de Utilização do Sistema de Jogo,
+
+b)  A Política de Privacidade e Cookies;
+
+c)  As Regras das Apostas Desportivas, e
+
+d)  A Política de Jogo Responsável.
+
+Se, de acordo com o dispositivo de acesso, a visualização dos presentes Termos e Condições não for a mais adequada, poderá contactar a SAS, solicitando o envio dos mesmos por e-mail para apoio@rasbet.pt.
+
+Se não concordar com alguns ou todos os termos do presente contrato, não clique no botão "Registar". Deverá sair do Site e não descarregar, instalar ou, de qualquer outra forma, utilizar o software ou a plataforma de jogo. Se for o caso, deve remover imediatamente o software do seu computador.
+
+ 
+
+1.    DEFINIÇÕES
+
+Além das definições legais previstas no Decreto-Lei n.º 66/2015 de 29 de abril, o Regime Jurídico do Jogo Online, as seguintes palavras e termos, quando utilizados neste Acordo, terão os seguintes significados (a menos que o contexto indique claramente o contrário):
+
+Aposta
+
+Valor apostado pelo titular de uma Conta de Jogador.
+
+Conta de Jogador
+
+Uma única conta pessoal - pertencente a um Jogador com mais de 18 anos e que corresponde a um processo de registo realizado por uma pessoa individual - mantida junto da SAS de forma a permitir que essa pessoa jogue e aposte online.
+
+Depósitos
+
+Qualquer transferência de fundos realizada por si para sua Conta de Jogador através de um Prestador de Serviços de Pagamentos.
+
+Ganhos
+
+Todos os ganhos de um titular de uma Conta de Jogador.
+
+Lei Aplicável
+
+O presente Acordo e toda a atividade com este relacionada, nomeadamente de acesso, visualização e uso, está sujeita à Lei Portuguesa e, em particular, à legislação, aos regulamentos e às instruções relativos ao jogo e às apostas online, incluindo o Decreto-Lei n.º 66/2015 de 29 de abril que aprovou o Regime Jurídico de Jogos e Apostas Online - RJO.
+
+Levantamentos
+
+Qualquer transferência de fundos da sua Conta de Jogador para a Conta de Pagamento detida si. 
+
+Nome de Utilizador e Palavra-Passe
+
+O nome de utilizador e a palavra-passe escolhidos pelo Jogador aquando do registo no Site.
+
+Nós / Nosso
+
+SAS Apostas Sociais – Jogos e Apostas Online, S.A. ou apenas SAS
+
+Prestador de Serviços de Pagamentos
+
+Uma empresa que através de uma Conta de Pagamento permite a execução de operações de pagamento (depositar, transferir ou levantar fundos).
+
+Regulador / SRIJ (Serviço de Regulação e Inspeção de Jogos)
+
+SRIJ (Serviço de Regulação e Inspeção de Jogos) do Turismo de Portugal I.P.
+
+Site
+
+www.rasbet.pt
+
+Software / Sistema de Jogo
+
+O software - licenciado para e gerido pela SAS - que será utilizado pelo Jogador para a sua atividade de jogo e apostas desportivas (Sistema de Jogo), incluindo qualquer programa ou arquivo de dados que derive deste, bem como qualquer documentação relacionada, nomeadamente quaisquer melhorias, modificações, acrescentos, traduções ou atualizações ao mencionado Software.
+
+Você 
+
+O utilizador do Software. Quaisquer referências a "utilizador", "cliente", "jogador", e/ou "vosso", referem-se a si, o Jogador, registado no Site.
+
+ 
+ 
+
+2.    OBJETO DO ACORDO
+
+2.1.  Este Acordo abrange todos os acordos entre si e a SAS que estejam relacionados com o uso do Sistema de Jogo (jogos a dinheiro ou jogos e apostas online de demonstração, sem recurso a dinheiro), do Software e do seu Site em geral. O Acordo inclui, além destes Termos e Condições de Utilização do Sistema de Jogo, do Site e do Software, a Política de Provacidade e Cookies, as Regras das Apostas e a Política de Jogo Responsável.
+
+2.2.  O Jogador compreende e aceita que podem existir condições específicas em separado sobre determinados eventos, apostas, jogos, promoções, bónus e ofertas especiais, além deste Acordo e sobre os quais será previamente informado. Nomeadamente e sempre que aplicável, o Acordo poderá incluir políticas de bónus vigentes em determinados eventos e momentos. Em caso de conflito entre as disposições especificas de tais apostas, eventos, promoções, bónus e ofertas especiais e as disposições deste Acordo, prevalecerão as disposições especiais.
+
+2.3.  O Jogador não pode transferir a terceiros os seus direitos ao abrigo deste Contrato.
+
+ 
+
+3.    SOBRE A SAS
+
+3.1.  A SAS é uma sociedade de direito português, com sede em Portugal, autorizada a exercer a atividade de apostas desportivas à cota e jogos de fortuna ou azar sob o nome comercial e o domínio Rasbet.pt por meio de licença atribuída pelo Instituto de Turismo de Portugal, I.P., o Regulador. Apenas os Operadores com Licença emitida pelo Turismo de Portugal, IP – na qualidade de entidade reguladora com poderes de monitorização, inspeção e regulação - podem explorar jogos e apostas online ao abrigo do RJO.
+
+3.2.  A marca RASBET é uma marca cedida à SAS a título oneroso e a marca Rasbet.pt é uma marca da propriedade da SAS. Ambas as marcas têm os seus direitos reservados.
+
+ 
+
+4.    LIMITAÇÕES E PROIBIÇÕES
+
+Limitações Pessoais:
+
+4.1.  Só os maiores de 18 anos podem usar o Site. Em nenhuma circunstância é permitido a um menor a utilização do Site.
+
+4.2.  O RJO estabelece que determinadas pessoas não podem jogar apesar de serem maiores de idade. Assim, a SAS, nos termos da Legislação Aplicável, não permite o registo efetuado pelas seguintes pessoas (diretamente ou por interposta pessoa):
+
+a)  Titulares dos órgãos de soberania e aos Representantes da República para as Regiões Autónomas;
+
+b)  Titulares dos órgãos de Governo das Regiões Autónomas;
+
+c)  Magistrados do Ministério Público, membros de autoridades policiais, forças de segurança e aos seus agentes;
+
+d)  Aos declarados incapazes nos termos da lei civil e àqueles que, voluntaria ou judicialmente, estejam impedidos de jogar;
+
+e)  Titulares dos órgãos sociais da SAS e seus trabalhadores relativamente ao Site na Internet da SAS;
+
+f)   Pessoas que tenham ou possam ter acesso aos sistemas informáticos dos jogos e apostas online de um determinado Site na Internet;
+
+g)  Dirigentes desportivos, técnicos desportivos, treinadores, praticantes desportivos, profissionais e amadores, juízes, árbitros, empresários desportivos e responsáveis de entidades organizadoras das competições e provas desportivas e das competições e corridas de cavalos objeto de apostas, quando, direta ou indiretamente, tenham ou possam ter qualquer intervenção no resultado dos eventos;
+
+h)  Trabalhadores da entidade de controlo, inspeção e regulação que exerçam tais competências, sem prejuízo do disposto no n.º 4 do artigo 47.º do RJO (ações de controlo, auditoria e supervisão);
+
+4.3.  Ao registar-se, o Jogador garante e declara que não lhe são aplicáveis estas limitações e proibições do RJO. As limitações pessoais previstas na Legislação Aplicável não lhe permitem registar-se, depositar, jogar ou levantar quaisquer Ganhos, pelo que a SAS poderá salvaguardar-se destas infrações, nomeadamente impedindo o registo, anulando quaisquer operações de jogo ou apostas no Site, bloqueando a Conta de Jogador ou reportando a situação ao Regulador.
+
+ 
+
+Limitações de Acesso:
+
+4.4.  Nos termos da Legislação Aplicável, a SAS obriga-se a redirecionar todos os acessos que se estabeleçam a partir de localizações situadas em território português ou que façam uso de Contas de Jogadores registados em Portugal para um domínio .pt, neste caso, o Site www.rasbet.pt.
+
+4.5.  Independentemente do redirecionamento mencionado no artigo anterior, não poderá fazer uso do Software e do Sistema de jogo, registar-se, fazer depósitos ou iniciar a atividade de jogo se for residente em território ou jurisdição identificado como sendo uma das jurisdições na qual a utilização dos nossos Serviços de jogos e apostas online seja ilegal ou contrária a qualquer regulamento ou ordenamento jurídico aplicável ("Jurisdição Proibida"). É da sua responsabilidade assegurar que não é este o caso. A SAS reserva-se o direito de suspender a título cautelar a sua conta se a Conta foi criada, ou está a ser utilizada, a partir de uma Jurisdição Proibida. "Jurisdições Proibidas" incluem a República Islâmica do  Afeganistão, Ilhas de  Alanda, Antígua e Barbuda, Austrália, Bahamas, Barbados, Bélgica, Belize, Bulgária, República Popular da China, Colômbia, Cuba, Chipre, República Checa, Dinamarca, Estónia, Domínica, Ilhas Faroé, França e seus Departamentos e Territórios Ultramarinos, Gronelândia, Grenada, Guiana, Haiti, Hungria, Hong Kong, Irão, Iraque, Israel, Itália, Jamaica, Líbia, Macau, Montserrate, Antilhas Holandesas, Polónia, Sérvia, Roménia, Singapura, Eslováquia, Eslovénia, Espanha, São Cristovão e Neves, Santa Lúcia, São Vicente e Granadinas, Sudão, Suriname, Síria, Filipinas, Holanda, Trindade e Tobago, Turquia, Reino Unido, Ucrânia, E.U.A e seus Territórios. Para mais informações, contate o Apoio ao Cliente.
+
+4.6.  Nem todos os países/jurisdições permitem que os seus residentes joguem online. Compete exclusivamente ao Utilizador determinar se o uso que faz do Sistema de Jogo é legal de acordo com a sua circunstância em concreto e com a jurisdição que lhe é aplicável.
+
+4.7.  A SAS não pretende nem autoriza que utilize o Site e a plataforma de jogo se tal utilização for ilegal no seu caso em concreto.
+
+4.8.  O facto de conseguir aceder não significa que esteja autorizado a jogar. A disponibilidade do Site não constitui uma oferta ou um convite para usar o Sistema de Jogo em jurisdição em que tal uso seja ilegal. Cabe-lhe a si certificar-se de que pode jogar, sem prejuízo das obrigações legais da SAS e dos mecanismos de controlo de que dispõe para controlar os acessos.
+
+4.9.  Se o uso do Sistema de Jogo não lhe é permitido na sua jurisdição ou pela Legislação Aplicável, não poderá aceder, jogar, depositar ou levantar quaisquer Ganhos que resultem desse uso proibido. As suas ações serão anuladas.
+
+4.10.  A SAS não pode ser responsabilizada pela utilização indevida pelo Jogador em jurisdições que não a Portuguesa, nomeadamente, nas jurisdições indicadas como Territórios Excluídos e em qualquer jurisdição onde os jogos e as apostas online não são autorizados.
+
+4.11.  O Jogador obriga-se a comunicar de forma imediata à SAS caso venha a estar abrangido por qualquer das situações ou limitações mencionadas neste ponto.
+
+ 
+
+Limitações de Atividade:
+
+4.12.  O Jogador compreende e aceita que o jogo e as apostas online não são uma atividade profissional, mas sim uma atividade lúdica e responsável, cujo enquadramento jurídico inclui nomeadamente e em particular o RJO, a legislação penal e contraordenacional, a legislação de combate à fraude, ao terrorismo e ao branqueamento de capitais.
+
+4.13.  Dentro dos limites legais, e no âmbito da suspeita de participação ou envolvimento em comportamentos contrários ao enquadramento jurídico e à atividade de jogo e apostas online, a SAS reserva-se o direito de cooperar plenamente com o Regulador, as autoridades policiais, judiciais e outras autoridades, incluindo as governamentais, entre outras, nomeadamente:
+
+a)  Denunciando e apoiando a investigação de atividades ilegais no Site, incluindo, mas sem limitar, atividades ilícitas ou criminosas, de fraude, conluio ou manipulação de eventos e resultados, em que o Jogador tenha qualquer tipo de envolvimento;
+
+b)  Dando informações sobre qualquer atividade que a SAS suspeite ser ilegal, fraudulenta ou imprópria, devendo o Jogador cooperar plenamente no apoio à investigação dessas atividades;
+
+c)  Suspendendo ou bloqueando a atividade de jogo no decurso das averiguações acima indicadas.
+
+4.14.  A SAS procederá à suspensão da Conta de Jogador e à inerente cativação, a título cautelar, do saldo da Conta de Jogador, caso seja observada - no momento do Registo ou no uso da Conta de Jogador – qualquer atividade que possa ser considerada fraudulenta e que não esteja em conformidade com os presentes Termos e Condições – "evento de fraude".
+
+Eventuais suspensões de conta com base em "eventos de fraude" são comunicadas ao SRIJ e quando aplicável, notificadas, por escrito, ao jogador, nos termos do nº1 do artigo 16.º do Regulamento n.º 836/2015, de 04 de dezembro, sem prejuízo de outras notificações legais que tenham cabimento - no prazo de 24 horas a contar da suspensão, com indicação dos motivos que a justificaram, bem como, de eventuais diligências tomadas.
+
+São "eventos de fraude" comportamentos que resultem nos seguintes factos ou relevem fortes indícios de:
+
+a)  Uso de múltiplas contas: contas múltiplas abertas no mesmo nome ou que de outra forma se refiram à mesma pessoa;
+
+b)  Uso de identidade de terceiro ou de Conta de Jogador em nome de terceiro;
+
+c)  Utilização indevida de meios de pagamento (cartões roubados, movimentos financeiros de depósito suspeitos, repetidas tentativas de exceder os limites diários dos sistemas de pagamento ou definidos pela SAS, etc.) ou irregularidades no comprovativo de titularidade da Conta de Pagamento;
+
+d)  Violação de limitações pessoais; e
+
+e)  Violação de limitações jurisdicionais.
+
+No seguimento de um dos acima identificados "eventos de fraude", e após análise adicional, a SAS poderá levantar a suspensão ou proceder ao Cancelamento da Conta mediante comunicação prévia ou concomitante ao SRIJ e, quanto à alteração do estado da sua Conta de Jogador, aos Jogadores envolvidos.
+
+Em concreto, na eventualidade de a entidade exploradora detetar ou tiver indícios de que um Jogador tem mais de uma Conta de Jogador aberta em Rasbet.pt ou que utiliza/acede ou tem atividade de jogo através de uma Conta de Jogador de terceiro, poderá, mediante notificação ao SRIJ, e face aos "eventos de fraude" citados acima nas alíneas a) e b):
+
+a)  proceder à suspensão imediata e temporária das Contas de Jogador envolvidas, com cativação dos respetivos saldos, até apurar ou confirmar a existência da referida infração;
+
+b)  proceder ao cancelamento das Contas de Jogador envolvidas caso se confirmem os eventos de fraude, reservando-se o direito de reter, a título cautelar, os saldos das Contas de Jogador envolvidas.
+
+Em caso de verificação superveniente de proibição de jogar (e.g. violação de limites pessoais ou jurisdicionais), a SAS procederá de imediato ao cancelamento da Conta de Jogador.
+
+ 
+
+5.    SEGURANÇA
+
+5.1.  A SAS só permite acesso ao seu Site através de redes seguras usando a encriptação do Nome de Utilizador e Palavra-passe que escolhe aquando do registo. Não pode apostar no Site sem passar pelo login de segurança.
+
+5.2.  A utilização que faça do Site está estritamente limitada a um uso particular e pessoal. O Site não pode ser usado para fins comerciais ou em nome ou por conta de outra pessoa.
+
+5.3.  Cada Jogador só pode ter uma Conta de Jogador. No registo da Conta de Jogador deve indicar o seu nome completo com exatidão e fornecer os restantes elementos de identificação que lhe são solicitados.
+
+5.4.  Cada Conta de Jogador só pode ter um único titular. A SAS reserva-se o direito de encerrar quaisquer outras Contas de Jogador criadas com o mesmo nome ou que se refiram à mesma pessoa.
+
+5.5.  O Jogador deve manter o seu Nome de Utilizador e Palavra-Passe confidenciais e tomar todas as medidas para garantir a segurança dos mesmos, nomeadamente (i) usar o Nome de Utilizador e Palavra-Passe de acordo com o presente Acordo, tomando todas as medidas razoáveis de forma a preservar a eficácia dos dispositivos de segurança personalizados a eles associados; (ii) não permitir o uso do Nome de Utilizador e Palavra-Passe por terceiros, (iii) não ceder o Nome de Utilizador e Palavra-Passe a terceiros, (iv) memorizar o Nome de Utilizador e Palavra-Passe, não o anotando, principalmente de modo inteligível ou acessível a terceiro.
+
+5.6.  A introdução e validação do Nome de Utilizador e Palavra-Passe pressupõe que é o Jogador titular da Conta de Jogador que acede, e será responsável por todas as atividades e transações realizadas na sua Conta de Jogador. Se alguém entrar na sua Conta, utilizando o seu Nome de Utilizador e Palavra-Passe corretos, a SAS assumirá de que se trata de um acesso realizado por si e todas as transações – nas quais o Nome de Utilizador e Palavra-Passe foram inseridas corretamente - serão consideradas válidas.
+
+5.7.  A SAS não se responsabiliza pelo acesso de terceiros à sua Conta de Jogador e, em nenhuma circunstância, será responsável por quaisquer perdas em que o Jogador incorra em resultado de uso indevido do seu Nome de Utilizador e Palavra-Passe por qualquer pessoa ou por qualquer acesso não autorizado à sua Conta de Jogador.
+
+5.8.  O Utilizador não pode usar o Nome de Utilizador ou a Palavra-Passe de outra pessoa, e não pode usar a Conta de Jogador de qualquer outra pessoa ou os seus meios de pagamento para aceder ou usar o Site ou o Software.
+
+5.9.  A SAS utiliza métodos avançados de encriptação das informações relativas ao Nome de Utilizador, Palavra-Passe e de quaisquer outras informações confidenciais que sejam transmitidas para e do aplicativo do Utilizador para os nossos servidores, desta forma salvaguardando-se e ao Jogador de tentativas de manipulação por parte de terceiros. O Utilizador não pode quebrar, entrar, aceder, ou sequer tentar quebrar, entrar ou aceder às barreiras de segurança. Caso a SAS suspeite que tentou ou pode estar a tentar quebrar, entrar, aceder ou de outra forma passar pela nossa segurança ou pelo Software, a SAS reserva-se o direito de encerrar, com efeitos imediatos o seu acesso ao Site e / ou a bloquear a sua Conta de Jogador, podendo a SAS - em consequência - informar as autoridades competentes.
+
+5.10.  Dentro dos limites da Legislação Aplicável, o Jogador indemnizará e manterá salvaguardados administradores, diretores, funcionários, agentes, subcontratados e fornecedores (incluindo, entre outros, o Fornecedor de Software) de todas as perdas, custos, despesas, reivindicações, ações, responsabilidades e danos (incluindo honorários), independentemente da origem ou da causa, que resultem (a) de um acesso e utilização do Site, do Sistema de Jogo ou do Software pelo Jogador ou por qualquer outra pessoa usando o seu Nome de Utilizador e Palavra-Passe; ou por (b) violação de qualquer um dos Termos e Condições deste Contrato.
+
+5.11.  Consulte também a informação e os conselhos disponibilizados em Proteção e Segurança.
+
+ 
+
+6.    GARANTIAS E DECLARAÇÕES DO JOGADOR
+
+6.1.  Ao registar-se, o Jogador garante e declara que:
+
+a)  Não é residente em nenhum território ou jurisdição onde seja proibida a prática de jogo e de apostas online e que não está a tentar aceder ou usar o Sistema de Jogo, o Site ou o Software a partir de qualquer uma dessas jurisdições ou em violação da Legislação Aplicável, nomeadamente usando VPNs, servidores proxy ou qualquer outro método semelhante usado para manipular a sua localização real;
+
+b)  Age em seu próprio nome;
+
+c)  É uma pessoa física e está ciente que a criação de contas por pessoas coletivas ou por robots é proibida;
+
+d)  É maior de 18 anos e não ajudará um menor de idade a registar-se ou a utilizar uma Conta de Jogador.
+
+e)  Não está limitado na sua capacidade legal, inabilitado ou interdito;
+
+f)  Todas as informações e documentos fornecidos no registo de Jogador são completos, verdadeiros, atuais e corretos e que irá atualizar a informação no caso de qualquer alteração dos mesmos;
+
+g)  Está plenamente consciente de que existe o risco de perder dinheiro por usar o Software para apostas desportivas;
+
+h)  Não está a depositar fundos provenientes de atividades criminosas e / ou ilegais e / ou não autorizadas;
+
+i)  Não pratica atividades criminosas ou ilícitas e / ou pretende utilizar a Conta de Jogador em conexão com tais atividades; não usa ou pretende usar ou pretende permitir que qualquer outra pessoa use o Sistema de Jogo ou a Conta de Jogador para qualquer atividade proibida ou ilegal, incluindo - mas sem limitar - a fraude ou o branqueamento de capitais, de acordo com a Legislação Aplicável ou com a de outra jurisdição relevante;
+
+j)  Não está em conluio ou a tentar entrar num conluio e nem pretende participar, direta ou indiretamente, em qualquer esquema de colusão com qualquer outro Jogador no decorrer de qualquer aposta ou jogo;
+
+k)  Os detalhes bancários, do seu cartão de débito / cartão de crédito fornecidos no processo de registo são os seus, na qualidade de único titular desses cartões e que o cartão não foi reportado como perdido ou roubado;
+
+l)  Nunca foi titular de uma Conta de Jogador com a SAS ou com qualquer outra entidade exploradora de apostas e jogos on-line que tenha sido suspensa ou desativada pela por violação da Legislação Aplicável ou dos TERMOS E CONDIÇÕES aplicáveis.
+
+m)  No passado, não procedeu a pedidos de devolução (chargebacks) através de qualquer Conta de Jogador;
+
+n)  Não tem já uma Conta de Jogador no Site;
+
+o)  Não pode vender, transferir e / ou adquirir Contas de Jogador para e de outros Jogadores;
+
+p)  Não pode transferir fundos entre Contas de Jogadores.
+
+q)  Não está atualmente autoexcluído ou proibido de jogar - voluntária ou judicialmente - nos termos da Legislação Aplicável.
+
+r)  Durante o período de vigência desses mecanismos de autoexclusão e autoproteção previstos pela Legislação Aplicável, não tentou contornar, nomeadamente, limites financeiros no decorrer de qualquer aposta ou jogo;.
+
+6.2.  A SAS reserva-se o direito de atuar contra o Jogador nos casos em que as garantias e os compromissos referidos acima forem incumpridos ou violados. 
+
+ 
+
+7.    REGISTO E CRIAÇÃO DA CONTA DO JOGADOR
+
+7.1.  A atividade de jogos e apostas online só é possível após registo e criação da sua Conta de Jogador que é individual e intransmissível.
+
+7.2.  Para inscrever-se, e em cumprimento da Legislação Aplicável, terá de preencher o formulário de inscrição disponível no Site. O Jogador deverá fornecer todas as informações e/ou documentação solicitadas pela SAS no registo/abertura da Conta de Jogador, nomeadamente, o nome completo (conforme cartão de cidadão/bilhete de identidade, passaporte); data de nascimento; nacionalidade; profissão; morada de residência; país de residência; número de identificação civil (nacional ou do passaporte ou de outro documento legalmente admitido); número de identificação fiscal (NIF); endereço de correio eletrónico e elementos identificadores e comprovativos da titularidade da Conta de Pagamento. Por regras específicas aprovadas pelo Regulador:- o formulário de registo inclui o pedido de número de telemóvel que não é de preenchimento obrigatório, não impedindo a concretização do registo por esse motivo;- no caso de cidadãos estrangeiros residentes em Portugal, mas que não tenham um número de identificação fiscal nacional, o seu preenchimento não é necessário;- o preenchimento do campo do IBAN não é obrigatório no momento do registo, sendo opcional para o Jogador preencher. Esta opção, no entanto, não prejudica a necessidade de enviar os elementos comprovativos dos seus elementos identificativos logo após o registo e sempre aquando do primeiro depósito por forma a cumprir com os prazos legalmente estabelecidos. Este comprovativo terá de ser um documento bancário emitido há menos de 3 meses, podendo ser obtido diretamente no balcão da respetiva instituição bancária ou extraído do sítio/app da mesma. Este comprovativo tem de mostrar o logótipo do banco, o IBAN completo, o nome completo e a data. Caso o documento seja em papel, deverá enviar-nos uma fotografia da página completa. Caso o documento seja digital, deverá enviar-nos o PDF original ou uma captura de ecrã. O Jogador declara que todas as informações que presta são completas, exatas, atuais e verdadeiras e que correspondem às que constam do documento de identificação utilizado para registar-se, bem como aos outros documentos comprovativos que deverá legalmente prestar.
+
+7.3.  O registo de jogador só se torna efetivo depois de verificada a identidade do Jogador e confirmada a inexistência de proibição de jogar, momento a partir do qual o Jogador pode dar início à prática de jogos e apostas online. No caso de acesso através de cartão do cidadão ou de bilhete de identidade a verificação será tendencialmente imediata uma vez que se realiza automaticamente por confronto à base de dados do Regulador para cidadãos nacionais. No caso de passaporte, a verificação não é automática e pode obrigar a uma suspensão do registo enquanto se realiza a verificação da identidade e dos demais requisitos legais.
+
+7.4.  A SAS é legalmente obrigada a verificar as informações transmitidas pelo Jogador. Assim, a SAS pode solicitar informações e/ou documentação, nomeadamente, prova de identidade, comprovativo de morada e detalhes e/ou referências bancárias, podendo para tanto exigir documentação certificada. O Jogador deve fornecer à SAS a informação e/ou documentação imediatamente após solicitação ou no prazo concedido. Todas as cópias têm de ser legíveis.
+
+7.5.  O Jogador não poderá proceder a levantamentos se as suas informações pessoais e bancárias não forem verificadas por meio de comprovativos que deve enviar à SAS no momento do registo, ou no mais tardar, aquando do primeiro depósito.
+
+7.6.  Caso se verifique a inexatidão de qualquer dos dados fornecidos no momento do registo, a sua Conta de Jogador poderá não ser criada e deverá efetuar novamente o processo de registo observando a exatidão dos dados a serem inscritos. A inexatidão dos dados ou a falta de envio de documentação necessária poderá atrasar a validação da sua identidade ou a transferência de saldo.
+
+ 
+
+8.    DEPÓSITOS E GANHOS NA SUA CONTA DE JOGADOR
+
+8.1.  Uma vez criada a sua Conta de Jogador, o Jogador poderá creditar fundos na sua Conta de Jogador.
+
+8.2.  O Jogador pode fazer Depósitos exclusivamente por qualquer um dos seguintes métodos de pagamento:
+
+a)  Através de um cartão de débito que deve estar em boas condições e registado em seu nome, e que seja aceite pela SAS;
+
+b)  Através de um cartão de crédito que deve estar em boas condições e registado em seu nome, e que seja aceite pela SAS;
+
+c)  Através de um Prestador de Serviços de Pagamentos aceite pela SAS; ou
+
+d)  Por qualquer outro método considerado aceitável por decisão exclusiva da SAS.
+
+8.3.  O depósito mínimo previsto pela SAS é de EUR 5,00 (cinco euros) para começar a jogar e a apostar. A SAS poderá alterar este mínimo avisando previamente os Jogadores - diretamente ou por alteração destes Termos e Condições. Poderá também, da mesma forma, determinar montantes máximos de depósitos.
+
+8.4.  Não é permitido obter empréstimos para jogar e o Jogador deverá sempre possuir fundos suficientes na sua Conta de Jogador para fazer apostas. O saldo do Jogador nunca poderá ser negativo. O jogo a crédito é proibido pela Lei Aplicável.
+
+8.5.  A SAS, assim como seus respetivos órgãos sociais, trabalhadores e demais colaboradores estão proibidos de conceder empréstimos ou disponibilizar, direta ou indiretamente, dispositivos que permitam aos Jogadores concederem empréstimos entre si.
+
+8.6.  Os saldos dos Jogadores estão protegidos. Conforme previsto pela Legislação Aplicável, a SAS apresentou garantias ao Regulador para cumprimento das obrigações legais, nomeadamente o pagamento dos saldos estimados das Contas de Jogador.
+
+8.7.  Cada pedido realizado pelo Jogador para transferir fundos para a sua Conta de Jogador deve constituir uma autorização válida para - conforme aplicável - a SAS ou para o Prestador de Serviços de Pagamentos transferirem o valor especificado no seu pedido para a sua Conta de Jogador.
+
+8.8.  O Jogador concorda também em não fazer devoluções (chargebacks) ou renunciar ou cancelar ou reverter qualquer das suas ordens de Depósitos, mas, em qualquer desses casos, concorda em reembolsar e compensar esses Depósitos não pagos, incluindo quaisquer despesas incorridas pela SAS no processo de reembolso do seu Depósito.
+
+8.9.  A SAS tem o direito de averiguar se os fundos que o Jogador solicitou para serem creditados na sua Conta de Jogador estão disponíveis, o que acontecerá após receber confirmação satisfatória do Prestador de Serviços de Pagamento. Somente quando os seus Depósitos forem validados segundo os critérios internos da SAS e do Prestador de Serviços de Pagamento relevante, a sua Conta de Jogador será creditada com os referidos fundos (salvo indicação em contrário).
+
+8.10.  Os fundos depositados não vencem juros. A SAS não é uma instituição financeira.
+
+8.11.  Nos casos em que a SAS tenha creditado valores na sua Conta de Jogador no âmbito de uma campanha promocional, o Jogador apenas poderá utilizar este montante para efetuar apostas no Site. Esse valor não pode ser levantado exceto nos termos e condições específicos da campanha promocional. Reservamo-nos o direito de reclamar esse montante se não o utilizar para efetuar uma ou mais apostas no Site durante o período que esteja determinado na promoção.
+
+8.12.  O montante creditado na sua Conta de Jogador não pode ser transferido para uma outra Conta de Jogador de outro utilizador do Site.
+
+ 
+
+9.    REGRAS DAS APOSTAS
+
+9.1.  Sem prejuízo do estabelecido aqui e complementarmente, consulte as nossas Regras das Apostas.
+
+9.2.  Aquando da aceitação e do registo das apostas, o Jogador tem acesso a informação inequívoca sobre a aposta, designadamente, a data e hora da prova desportiva, o tipo de aposta, os prognósticos, o montante total da aposta e a data e hora da aceitação da aposta e o valor da cota com indicação do valor possível de prémio, caso a aposta seja ganhadora.
+
+9.3.  A cota mínima em apostas simples é 1,20. É possível selecionar cotas inferiores a 1,20 desde que a cota final da aposta múltipla seja igual ou superior a 1,20.
+
+9.4.  A apresentação de estatísticas, informações e indicações sobre competições, eventos e resultados, ao vivo ou por iniciar, devem ser considerados apenas e meramente como orientadores e hipotéticos e não são elementos sobre os quais o Jogador deva ou possa apoiar a sua decisão de aposta. É da responsabilidade do Jogador verificar através de fontes oficiais as informações relacionadas com a aposta em questão.
+
+9.5.  O montante mínimo para qualquer aposta é de EUR 0,10 (dez cêntimos).
+
+9.6.  O Jogador sabe e concorda que o valor máximo que pode ganhar, numa única aposta desportiva, simples ou múltipla, é de EUR 150.000 (cento e cinquenta mil euros) e que o acumulado de ganhos máximos semanais é de EUR 500.000 (quinhentos mil euros). 
+
+9.7.  O montante máximo e mínimo autorizado para todas as apostas desportivas é definido pela SAS, que se reserva o direito de o alterar sem aviso prévio. Além disso, a SAS também se reserva o direito de, a qualquer momento, impor limites específicos a determinados eventos ou mercados.
+
+9.8.  No caso de um Jogador realizar uma aposta cujo montante exceda o limite de aposta ou de possíveis ganhos fixado por si ou pela SAS, o Sistema de Jogo não aceitará a sua aposta, informando-o previamente à colocação dessa aposta.
+
+9.9.  Se o Jogador realizou várias apostas idênticas (apostas simples ou apostas de uma ou várias combinações) cujos ganhos excedam os limites de prémios pré-fixados, seja por aposta, evento ou modalidade o Sistema de Jogo não aceitará as suas apostas, informando-o previamente à colocação dessa aposta.
+
+9.10.  Qualquer Aposta realizada pelo Jogador será considerada como uma autorização para debitar o respetivo valor na sua Conta de Jogador. Desde que o saldo da sua Conta de Jogador, no momento em que a Aposta for feita, seja maior ou igual ao valor da Aposta, a SAS debita na sua Conta de Jogador o montante da Aposta.
+
+9.11.  Podem ocorrer falhas de comunicação. Todas as apostas online serão confirmadas pela mensagem "Aposta confirmada" e as mesmas poderão ser consultadas na secção "A minha conta". A aceitação e registo da aposta estará disponível para consulta pelo Jogador através da respetiva conta até que sejam declarados os resultados e classificação oficial da competição e ou evento desportivo
+
+9.12.  A SAS não se responsabiliza se as apostas submetidas não forem confirmadas pelo software da plataforma de jogo da forma acima descrita. Se uma aposta não for confirmada conforme descrito acima, contacte-nos para resolver a situação. No entanto, e para todos os efeitos, a aposta não se considera realizada até à confirmação e disponibilidade para consulta na Conta de Jogador.
+
+9.13.  As apostas só são confirmadas quando recebidas nos servidores da SAS. Se houver uma interrupção na comunicação depois de fazer uma aposta e que tenha sido recebida em servidor, esta ainda será considerada válida. O Jogador será informado de que foi aceite a Aposta quando a comunicação for restabelecida, momento em que a aposta poderá já ter sido utilizada. O Jogador receberá informações sobre o resultado da aposta feita. Se a Aposta não for recebida em servidor, esta não será considerada e o valor da aposta não será retirado da sua Conta de Jogador.
+
+ 
+
+10.    LEVANTAMENTOS DA CONTA DE JOGADOR
+
+10.1.  O Jogador pode, a qualquer momento, solicitar o levantamento do saldo ou de parte do saldo da sua Conta de Jogador, caso em que a SAS ordenará a respetiva transferência para a Conta de Pagamento indicada e titulada pelo Jogador, no prazo máximo de 48 horas, conforme estabelecido pela Legislação Aplicável.
+
+10.2.  Tendo sido indicada mais de uma Conta de Pagamento, as transferências de saldo da Conta de Jogador são preferencialmente efetuadas para a Conta de Pagamento utilizada para realizar o depósito.
+
+10.3.  O saldo existente na Conta de Jogador só poderá ser transferido para a Conta de Pagamento indicada pelo Jogador quando a identidade do Jogador e a titularidade da Conta de Pagamento seja comprovada pela SAS, nos termos da Legislação Aplicável. O Jogador será regularmente relembrado para apresentar os comprovativos legalmente exigidos, caso não o faça aquando do registo ou do primeiro depósito.
+
+10.4.  É obrigação do Jogador provar a titularidade da Conta de Pagamento que indicou no Registo, aquando do primeiro depósito, ou de qualquer outra Conta de Pagamento que indique posteriormente.
+
+10.5.  O Jogador aceita que, se não indicar uma Conta de Pagamento e se não enviar os documentos comprovativos necessários à sua identificação e à comprovação da titularidade da Conta de Pagamento pela qual opta, a SAS não poderá proceder à transferência do saldo solicitado até obter essa informação e documentação. Se, aquando do pedido de levantamento e após o pedido da SAS para apresentação da documentação exigida pela Legislação Aplicável, o Jogador não enviar toda a documentação necessária e nas condições exigidas no prazo de 7 dias, o pedido de levantamento caduca, sendo o Jogador alertado desse facto e da possibilidade de efetuar novo pedido de levantamento. 
+
+10.6.  Qualquer transferência de fundos da Conta de Jogador será efetuada por meio de transferência bancária ou qualquer outro método disponível e admitido pela SAS. Caso o método utilizado para o depósito não permita a opção de levantamento, o levantamento é transferido para a Conta de Pagamento indicada pelo Jogador aquando do Registo ou para outra indicada posteriormente, desde que tenha demonstrado a sua titularidade.
+
+10.7.  Sempre que o Jogador pretenda alterar (adicionar ou substituir) os dados de uma sua Conta de Pagamento, deverá disponibilizar cópia de documento que comprove a titularidade da mesma, sob pena de não poderem ser aceites as referidas alterações e, consequentemente, não ser o seu pedido de levantamento processado para a nova Conta de Pagamento por si indicada. A SAS só adiciona ou substitui uma Conta de Pagamento quando a titularidade seja comprovada.
+
+10.8.  O Jogador pode cancelar o pedido de levantamento até ao limite do momento em que receba confirmação da ordem de transferência por parte da SAS.
+
+10.9.  A Conta de Jogador não deve ser utilizada ou considerada como sendo uma conta bancária.
+
+ 
+
+11.    CANCELAMENTO, DESATIVAÇÃO E SUSPENSÃO DA CONTA DE JOGADOR
+
+11.1.  A Conta de Jogador pode ser suspensa o que determina a impossibilidade de qualquer tipo de operação de jogo ou movimento da Conta de Jogador, com exceção de levantamentos, por iniciativa da SAS pelas razões previstas na Legislação Aplicável e nestes Termos e Condições.
+
+11.2.  A Conta de Jogador pode também ser encerrada por (i) rescisão do contrato de jogo por iniciativa do Jogador ou (ii) por cancelamento do registo de Jogador fundamentado na autoexclusão do jogador por tempo indeterminado ou (iii) por ter decorrido ininterruptamente o período de tempo máximo previsto para a suspensão da Conta de Jogador.
+
+11.3.  No caso de rescisão do contrato de jogo por iniciativa do Jogador, o Utilizador pode a qualquer momento cancelar a sua Conta de Jogador contatando o Apoio ao Cliente. Ao fechar a sua Conta de Jogador, a SAS devolve o saldo da Conta de Jogador para a Conta de Pagamento indicada e titulada pelo Jogador no prazo de 48 horas.
+
+11.4.  Pode haver igualmente lugar à desativação da Conta de Jogador, ação que determina o encerramento da Conta de Jogador, por iniciativa da SAS pelas razões previstas na Legislação Aplicável e nestes Termos e Condições, nomeadamente:
+
+a)  Quando impenda sobre o jogador uma proibição judicial de jogar. A desativação da Conta de Jogador produz efeitos a partir da data em que a SAS é notificada da decisão. A SAS procederá, neste caso, à transferência do saldo disponível na Conta de Jogador para a Conta de Pagamento indicada e titulada pelo Jogador no prazo de 48 horas. A desativação da Conta de Jogador impede o Jogador de realizar quaisquer operações de jogo, mas não impede o Jogador de aceder à informação constante na sua Conta de Jogador, devendo contactar o Apoio ao Cliente para este efeito.
+
+b)  Em caso de morte do Jogador. Neste caso, a SAS procede à desativação da Conta de Jogador logo que tenha conhecimento do facto e procede à transferência do saldo da Conta de Jogador para a Conta de Pagamento indicada e titulada por este, no prazo de três dias, a contar da data em que lhe é apresentada a respetiva certidão de óbito.
+
+11.5.  No seguimento de um cancelamento de registo ou de conta nos termos da Legislação Aplicável, e na impossibilidade absoluta de ordenar a transferência do saldo da Conta de Jogador para a Conta de Pagamento indicada e titulada pelo Jogador, no prazo máximo de 48 horas, por falta de colaboração do Jogador na apresentação dos documentos necessários à validação de Conta de Pagamento, nos termos exigidos pelo Regime Jurídico dos Jogos e Apostas Online e depois de esgotadas todas as possibilidades de obtenção dos dados necessários à transferência do saldo da conta do Jogador, nos termos estabelecidos no nº 3. do artigo 14.º do Regulamento nº 836/2015, publicado no Diário da República, 2ª série, nº 238, de 04 de Dezembro de 2015, será dirigida ao Jogador uma interpelação efetiva, por correio eletrónico ou postal, com o intuito de lhe dar conhecimento da necessidade de fornecer novamente os dados imprescindíveis para a transferência de saldo e, simultaneamente, advertir de forma expressa, que caso ignore o pedido efetuado, no prazo de 6 (seis) meses a contar do envio da referida interpelação, o saldo da Conta de Jogador reverterá para uma instituição do sector social, com o respetivo qualificativo reconhecido de utilidade pública. Caso o pedido de cancelamento de registo ou de Conta de Jogador aconteça com apostas em aberto, e na eventualidade de haver, ainda assim, saldo na Conta de Jogador, este será interpelado, em primeira instância, no momento do pedido do cancelamento de registo ou de Conta de Jogador, e caso as apostas em aberto gerem alteração de saldo sem que, durante esse período, o Jogador tenha colaborado na apresentação dos documentos necessários à validação de Conta de Pagamento, será novamente interpelado no momento do encerramento da última aposta em aberto.
+
+11.6.  Sempre que proceda à desativação, à suspensão ou ao cancelamento da Conta de Jogador, a SAS irá notificá-lo, por escrito, preferencialmente por email para o endereço de correio eletrónico indicado no ato do registo, com indicação dos respetivos motivos e efeitos, e, se for o caso, do montante do saldo a transferir da Conta de Jogador para a respetiva Conta de Pagamento.
+
+11.7.  Por motivos excecionais, devidamente fundamentados - e quando legalmente previsto, previamente comunicados ao Regulador - as transferências previstas nos números anteriores podem ser diferidas quando a SAS:
+
+a)  Tenha de verificar a titularidade da Conta de Pagamento e o Jogador não tenha enviado os necessários comprovativos; e/ou
+
+b)  Suspeite que a operação possa estar relacionada com a prática dos crimes de branqueamento de capitais ou de financiamento do terrorismo, observando -se, neste caso, as normas que estabelecem as medidas de natureza preventiva e repressiva de combate a estas práticas.
+
+11.8.  Sempre que verificar a existência de indícios bastantes de uma atividade de jogo compulsiva ou sinais de dependência do jogo, a SAS pode suspender, a título cautelar, o seu Registo de Jogador e/ou a sua Conta de Jogador. O SRIJ será informado, no prazo de 24 horas, sobre a suspensão da sua conta, com indicação dos respetivos fundamentos. Esta medida serve única e exclusivamente para sua proteção e só será tomada após prestação de todos os esclarecimentos e aconselhamentos relativos à prática do jogo responsável, incluindo o encaminhamento para a Linha de Apoio ao Jogo Responsável do Rasbet.pt.
+
+ 
+
+12.    DIREITOS DA ENTIDADE EXPLORADORA
+
+12.1.  A SAS reserva-se o direito, sem necessidade de causa ou justificação, a:
+
+a)  Recusar o registo de qualquer requerente no seu Site ou no Sistema de Jogo, caso se verifique algum impedimento legal a esse registo;
+
+b)  Recusar aceitar qualquer participação no Sistema de Jogo, nomeadamente a de suspender a aceitação de apostas nos casos previstos na Legislação Aplicável ou nos presentes Termos e Condições;
+
+c)  Alterar, suspender, remover, modificar ou adicionar qualquer jogo ou torneio em tempo que se encontrem disponíveis no Sistema de Jogo;
+
+d)  Suspender o registo de um Jogador caso este não aceda, de forma ininterrupta, durante dois anos, à Conta de Jogador;
+
+e)  Cancelar o registo nos termos previstos na Legislação Aplicável e nestes Termos e Condições;
+
+f)  Suspender a Conta de Jogador quando hajam suspeitas de associação à prática dos crimes de branqueamento de capitais ou de financiamento do terrorismo. A suspensão neste caso produz efeitos imediatos e vigora até à data em que a suspeição seja resolvida ou em que ocorrer o cancelamento da Conta de Jogador por decurso do tempo ou a sua desativação por decisão das entidades competentes. A SAS comunicará ao Regulador, nos termos previstos na Legislação Aplicável, os factos mencionados acima, acompanhados dos elementos de prova recolhidos, no prazo máximo de 24 horas a contar da data em que deles teve conhecimento, sem prejuízo do cumprimento da legislação que estabelece as medidas de natureza preventiva e repressiva de combate ao branqueamento de capitais e ao financiamento do terrorismo.
+
+g)  Proceder a verificações e consultas relacionadas com o Jogador em bases de dados nacionais e internacionais.
+
+12.2.  Dentro dos limites legais e regulatórios, a SAS pode transferir, ceder ou sublicenciar esta Plataforma de Jogo e o respetivo Acordo a um Terceiro, sem aviso prévio. Ao aceitar estes Termos e Condições o Jogador está a dar o seu consentimento a essa transferência.
+
+ 
+
+13.    JOGO RESPONSÁVEL
+
+13.1.  Mantenha sempre uma atitude realista e divertida relativamente ao Jogo e às Apostas Desportivas. O Site www.rasbet.pt deve ser utilizado para fins de entretenimento. Sobre Jogo Responsável, consulte a nossa Política de Jogo Responsável, que é parte integrante destes Termos e Condições, sem prejuízo das informações que adiantamos abaixo.
+
+13.2.  A SAS disponibiliza no Site ferramentas que lhe possibilitam impor limites de apostas, depósitos e perdas de forma a permitir-lhe controlar a sua atividade de jogo.
+
+13.3.  Através das ferramentas de jogo responsável de que dispõe, o Jogador pode autoexcluir-se do Site. O Jogador pode a qualquer momento solicitar uma autoexclusão; no caso de ser por tempo determinado, a sua Conta de Jogador fica suspensa, mas pode consultar os seus dados e o seu histórico diretamente, bem como efetuar levantamentos; no caso de uma autoexclusão por período indeterminado, a sua conta será cancelada. Neste caso, o acesso aos seus dados e histórico, deve ser feita, por pedido ao nosso Apoio ao Cliente (apoio@rasbet.pt) ou através do e-mail jogoresponsavel@rasbet.pt.
+
+13.4.  No âmbito da autoexclusão, estando a conta suspensa ou cancelada, o Jogador não poderá apostar e/ou jogar e deixará de receber comunicações promocionais por parte da SAS.
+
+13.5.  Pode também autoexcluir-se através do Site do Regulador, na página da Internet do Serviço de Regulação e Inspeção de Jogos (SRIJ) do Turismo de Portugal, I.P
+
+13.6.  A autoexclusão produz efeitos a partir do momento em que o jogador se autoexclui no nosso Site ou, no caso de o Jogador se ter autoexcluído no Site na Internet do SRIJ, a partir da data em que a SAS seja notificada pelo SRIJ.
+
+13.7.  O período de autoexclusão tem a duração mínima de três (3) meses e perdura até à data indicada por si ou, na falta dessa indicação, por tempo indeterminado.
+
+13.8.  Sem prejuízo do período de duração mínima de três (3) meses supramencionado, poderá revogar a sua autoexclusão a qualquer altura. O pedido de revogação só terá efeito decorrido o prazo de um mês sobre o pedido e após o decurso do prazo mínimo de duração da autoexclusão.
+
+13.9.  Se o pedido de autoexclusão for efetuado por período indeterminado, o saldo disponível na sua Conta de Jogador será transferido no prazo de 48 horas para a Conta de Pagamento indicada aquando do registo. Se a autoexclusão for temporária, poderá solicitar à SAS esta transferência.
+
+13.10.  Assim que o seu período de autoexclusão terminar, no caso de uma autoexclusão por tempo determinado, a sua conta será automaticamente reativada. Poderá reativar a sua Conta iniciando uma sessão na mesma. Por exclusiva decisão da SAS, pode ser requerido o envio de quaisquer documentos necessários para verificação de identidade e/ou titularidade da Conta de Pagamento indicada.
+
+ 
+
+14.    PRIVACIDADE E DADOS PESSOAIS
+
+14.1.  A SAS cumpre os princípios legais nacionais e europeus em vigor decorrentes da legislação de proteção de dados, designadamente das exigências impostas pelo Regulamento Geral de Proteção de Dados - Regulamento (UE) n.º 2016/679, do Parlamento Europeu e do Conselho, de 27 de abril de 2016, relativo à proteção das pessoas singulares no que diz respeito ao tratamento de dados pessoais e à livre circulação desses dados, e demais legislação específica aprovada neste âmbito, bem como das especificidades do RJO. Consulte a nossa Política de Privacidade e Cookies. O pedido de criação de uma Conta de Jogador significa aceitar, dentro dos limites estabelecidos na Política de Privacidade e Cookies, o tratamento dos seus Dados Pessoais.
+
+14.2.  Os Dados Pessoais recolhidos aquando da celebração do presente Acordo e durante a sua execução, serão objeto de tratamento pela SAS na qualidade de responsável pelo tratamento, sendo legalmente necessários para a celebração deste Acordo, não podendo a SAS, em caso de recusa do Jogador, avançar com a celebração do Acordo e, como tal, estabelecer a relação comercial.
+
+14.3.  Os Jogadores que se registem em Rasbet.pt são objeto de decisões automatizadas no momento de registo com a finalidade de verificação da identidade, por forma aumentar a segurança e a fiabilidade da verificação bem como a tornar o processo mais rápido, assim permitindo que se inicie a atividade de jogo de forma mais segura. Este mecanismo de verificação e validação dos dados introduzidos é definido e disponibilizado nos termos da Legislação Aplicável, e funciona mediante consulta às bases de dados de entidade pública. Esta validação automatizada compreende uma solução técnica e tecnológica de comunicação direta devidamente integrada no sistema e que cumpre as exigências legais definidas no Regulamento n.º 903-B/2015, de 23 de dezembro, relativo aos requisitos técnicos do sistema técnico de jogo online. O Jogador em causa será informado quando a validação por decisão automatizada não seja possível ou tenha falhado, seguindo-se os trâmites da validação manual por parte da SAS. Assim, durante o processo de registo de uma Conta de Jogador, haverá ou uma validação automatizada ou, caso a validação falhe, o registo continua e o Utilizador precisa de enviar a documentação para a SAS para que esta possa ser validada manualmente; caso a validação seja positiva, o registo continua e o Jogador poderá fazer uso da sua Conta de Jogador.
+
+14.4.  A SAS irá proceder à recolha, registo, organização, estruturação, conservação, adaptação ou alteração, recuperação, consulta, utilização, divulgação por transmissão, difusão ou qualquer outra forma de disponibilização, comparação ou interconexão, limitação ou anonimização dos referidos Dados Pessoais da forma e para os fins melhor descritos na nossa Política de Privacidade e Cookies.
+
+14.5.  Para mais detalhes sobre a nossa Política de Privacidade e Cookies consulte-a no menu lateral do Site, sem prejuízo da informação que se adianta abaixo.
+
+14.6.  Nos termos do artigo 17° do RJO, as pessoas autorizadas no exercício das suas funções a aceder aos Dados Pessoais dos Jogadores são obrigadas a sigilo profissional, mesmo após o termo de suas funções.
+
+14.7.  A SAS é também legalmente obrigada a conservar todas as informações recolhidas através da interação com o Jogador durante um período de 10 anos.
+
+14.8.  Nos termos da Legislação relativa à Proteção de Dados Pessoais, e em consonância com a atividade de jogo, o titular dos dados tem, nomeadamente, o direito de acesso, o direito de retificação ou apagamento, o direito à limitação do tratamento, o direito de se opor ao tratamento e o direito à portabilidade dos dados. O titular dos dados tem também o direito de, a qualquer momento, retirar o consentimento para o tratamento dos dados. Poderá gerir os seus dados acedendo à sua Conta de Jogador ou ainda contactando o Apoio ao Cliente através do email apoio@rasbet.pt. A alteração de informações bancárias terá de ser sempre realizada através do Apoio ao Cliente ou através do email apoio@rasbet.pt e não diretamente na sua Conta de Jogador. 
+
+14.9.  Relembramos que a Legislação Aplicável não autoriza a modificação das informações relativas à data e local de nascimento, ao número de identificação civil e ao número de identificação fiscal.
+
+14.10.  A SAS terá o direito de, em determinadas circunstâncias, divulgar informações os seus Dados Pessoais às autoridades relevantes competentes (governamentais, administrativas ou outras), quando tal seja exigido pela legislação aplicável e na estrita medida prevista na lei. Em particular, os seus dados pessoais poderão ser comunicados ao Serviço de Regulação e Inspeção de Jogos – SRIJ, à Comissão Nacional de Proteção de Dados e a qualquer outra autoridade competente para fins de controlo e fiscalização. A SAS poderá, ainda, transmitir os seus Dados Pessoais no âmbito das suas obrigações legais em matéria de prevenção e combate ao branqueamento de capitais e ao financiamento do terrorismo.
+
+ 
+
+15.    LIMITAÇÃO DE RESPONSABILIDADE
+
+15.1.  O Jogador reconhece que a SAS não controla e não assume responsabilidade pelo uso que o Jogador faz do Software – essa utilização é feita por sua conta e risco. A SAS ou os seus parceiros comerciais não assumem, dentro dos limites legais da lei aplicável, qualquer responsabilidade relacionada com essa utilização.
+
+15.2.  Em nenhuma circunstância a SAS ou o fornecedor de software serão responsáveis perante o Jogador ou terceiros por quaisquer danos diretos ou indiretos, acidentais ou intencionais de qualquer tipo, incluindo, sem limitação, perda de negócios, lucros, receitas, contratos ou por danos e prejuízos resultantes de perdas ou corrupção de quaisquer dados, tenha ou não sido antecipadamente notificada à SAS essa possibilidade de perdas ou danos quando causados por factos ocorridos involuntariamente ou independentemente da vontade da SAS.
+
+15.3.  Sem prejuízo de qualquer outra disposição de limitação de responsabilidade prevista neste Acordo, nem a SAS, nem o Fornecedor de Software, nem qualquer entidade relacionada, serão responsáveis por quaisquer perdas, custos ou danos (independentemente do motivo) resultantes ou alegadamente resultantes ou causados por qualquer um dos seguintes eventos:
+
+a)  Qualquer erro devido à entrada de informações incorretas pelo Jogador;
+
+b)  Qualquer fraude, engano ou deturpação pelo Jogador;
+
+c)  Decisão de não aceitar um Depósito do Jogador;
+
+d)  Qualquer atraso na receção ou aceitação de um Depósito pela SAS ou na retenção de um levantamento para a realização de procedimentos de verificação exigidos legalmente;
+
+e)  Uso da sua Conta de Jogador para fins que podem ser considerados ilegais de acordo com as leis aplicáveis;
+
+f)  Quaisquer transações na sua Conta de Jogador que sejam realizadas após a inserção correta do seu "Nome de Utilizador" e "Palavra-Passe";
+
+g)  Qualquer interceção ou uso não autorizado de dados relacionados com o Jogador ou a sua Conta de Jogador;
+
+h)  Qualquer incapacidade do Jogador de usar ou aceder ao Site por qualquer motivo;
+
+i)  Quaisquer ações ou transações por terceiro que use o Nome de Utilizador e Palavra-Passe do Jogador;
+
+j)  Qualquer causa sobre a qual a SAS não tenha controlo direto, incluindo problemas atribuíveis a hardware ou software de computador (incluindo vírus de computador e incluindo o Software), sistemas de transmissão de dados, telefone ou outras comunicações ou provedores de serviços de Internet;
+
+k)  A perda de quaisquer transações causadas pela perda ou mau funcionamento de qualquer dispositivo de comunicação usado pelo Jogador ou qualquer entidade que transmita informações entre o Jogador, a SAS ou qualquer outra empresa Prestadora de Serviços de Pagamento;
+
+l)  Quaisquer comunicações de email não entregues;
+
+m)  A qualidade ou indisponibilidade do Site; ou
+
+n)  Qualquer resultado de ato administrativo ou legislativo ou qualquer evento de força maior.
+
+ 
+
+16.    MODIFICAÇÕES DOS TERMOS E CONDIÇÕES
+
+16.1.  A SAS reserva-se o direito de modificar e de atualizar os presentes Termos e Condições, incluindo, mas sem limitar, a Política de Privacidade e Cookies e as Regras das Apostas a qualquer momento, alertando o Jogador para a existência de uma versão atualizada e solicitando nova aceitação dos seus termos. As alterações têm força obrigatória e produzem os seus efeitos assim que forem aceites expressamente pelo Jogador.
+
+16.2.  A SAS aconselha a consulta regular dos Termos e Condições de Utilização.
+
+ 
+
+17.    TERMO
+
+17.1.  Este Acordo entra em vigor e torna-se vinculativo a partir do momento em que o Jogador o aceita, clicando no botão "Registar" e permanece em vigor por tempo indeterminado, podendo ser suspenso ou cancelado nos termos deste Acordo e da Legislação Aplicáveis.
+
+17.2.  O Jogador, para efeitos de clarificação, está vinculado a este Acordo se utilizar o Sistema de Jogo ou o Site ou o Software de qualquer forma, incluindo, entre outros eventos, ao entrar na Plataforma ou a fazer um depósito através da sua Conta de Jogador.
+
+ 
+
+18.    LEI APLICÁVEL
+
+18.1.  Para os litígios relacionados com a negociação pré-contratual, adesão, interpretação e execução deste contrato ou dele decorrentes, com exceção dos litígios respeitantes ao cumprimento de obrigações, é competente o foro da Comarca de Lisboa, sem prejuízo de norma legal imperativa que imponha outro. 
+
+18.2.  A ilegalidade, invalidade ou exequibilidade de qualquer disposição deste Acordo não afetará a legalidade, validade ou exequibilidade das demais disposições deste Acordo.
+
+ 
+
+19.    COMUNICAÇÕES
+
+19.1.  O Jogador poderá contactar a SAS a qualquer momento em caso de dúvidas ou sempre que precisar de assistência. Para fornecer um melhor serviço e para sua proteção, as conversas telefónicas e outras comunicações registadas poderão ser gravadas.
+
+19.2.  O Jogador, ao aceitar os presentes Termos e Condições, aceita receber comunicações da SAS em formato eletrónico. As comunicações eletrónicas podem ser realizadas por diversos meios, nomeadamente através de páginas do Site e / ou mensagens / áreas de ajuda e / ou entregues no seu email, conforme adequado e decidido pela SAS.
+
+19.3.  As notificações que devem ser feitas por escrito para a SAS ou qualquer dúvida sobre este Contrato devem ser dirigidas a: apoio@rasbet.pt, com recibo de entrega.
+
+ 
+
+20.    APOIO AO CLIENTE
+
+20.1.  Todas as questões relacionadas com o Apoio a Clientes ou reclamações serão admitidas e respondidas com brevidade. A SAS manterá registo das comunicações recebidas e das ações e/ou medidas tomadas no seu seguimento.
+
+20.2.  Quaisquer reclamações relativas ao histórico da sua Conta de Jogador ou ao seu saldo deverão ser realizadas num prazo de catorze (14) dias a partir do momento da publicação da informação no Site.
+
+20.3.  Para este efeito, poderá contactar-nos através do email apoio@rasbet.pt ou através do nosso serviço de Apoio ao Cliente, aberto todos os dias das 12.00 às 21.00.
+
+ 
+
+21. SERVIÇO LIVE STREAM
+
+21.1. Para aceder ao serviço Live Stream é necessário aceder à Conta de Jogador em Rasbet.pt.
+
+21.2. O serviço Live Stream estará disponível durante as 24 horas seguintes à colocação de uma aposta única de valor igual ou superior a 0,50€ (cinquenta cêntimos).
+
+(Exemplo: uma aposta de 0,50€ será válida para assistir ao Live Stream, mas 3 apostas de 0,25€ não serão válidas para assistir ao Live Stream.)
+
+21.3.  A SAS reserva-se no direito de suspender o requisito previsto no ponto 21.2. durante os períodos promocionais, sem aviso prévio.
+
+21.4.  A SAS reserva-se no direito de suspender, substituir ou remover quaisquer conteúdos do serviço Live Stream à sua total descrição e sem aviso prévio. 
+
+21.5. O serviço Live Stream poderá apresentar alguns casos de desfasamento temporal no processo de transmissão.
+
+21.6.  A SAS não é considerada responsável por quaisquer desfasamentos ou quaisquer outros erros experienciados durante a transmissão.
+
+21.7. A SAS não é responsável pelo nível de qualidade da transmissão já que este depende de fatores fora do seu controlo, incluindo a qualidade da ligação à internet dos seus clientes.
+
+21.8. Todas as transmissões disponibilizadas pelo serviço Live Stream são destinadas estritamente a uso pessoal e não devem, em qualquer circunstância, ser utilizadas comercialmente ou disponibilizadas em público, seja a título gratuito ou oneroso. 
+
+21.9. Ao usufruir do serviço Live Stream os clientes aceitam que todas as transmissões são integralmente protegidas por direitos de propriedade intelectual.
+
+21.10.  Sem prejuízo de procedimentos legais subsequentes que a SAS possa acionar contra os seus clientes, a SAS reserva-se no direito de suspender, cancelar ou encerrar quaisquer Contas de Jogador no caso de existir a suspeita plausível de utilização do serviço Live Stream para fins diversos do uso pessoal.
+      </p>
+    </div>
+</body>
+</html>

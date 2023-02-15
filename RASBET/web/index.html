@@ -1,0 +1,61 @@
+<!DOCTYPE Atml>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,
+    initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="css/style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <form id="form_login" class="form_login" method="post">
+            <div class="logo">
+                <a href="#" class="logo">
+                    <img src="img\logo_login.png" alt="logo">
+                </a>
+            </div>
+            
+            <h1>Login</h1>
+        
+            <div class="username">
+                <input type="text" placeholder=" Username" id="username" required >
+                <i class="far fa-envelope"></i>
+            </div>
+        
+            <div class="password">
+                <input type="password" placeholder=" Password" id="password" required>
+                <i class="fas fa-lock-open"></i>
+            </div>
+
+            <button id="btn" type="submit">Login</button>
+
+            <div class="checkbox-text">
+                <div class="checkbox-content">
+                    <input type="checkbox" id="logCheck">
+                    <label for="logCheck" class="text">Remember me</label>
+                </div>
+
+                <a href="#" class="text">Forgot password?</a>
+            </div>
+
+            <div class="login-signup">
+                <span class="text">Not a member?
+                    <a href="register.html" 
+                    onclick="location.replace('register.html');">Sign up</a> 
+                </span>
+            </div>
+        </form>
+    </div>
+    
+    <script src="js\login.js"></script>
+</body>
+</html>

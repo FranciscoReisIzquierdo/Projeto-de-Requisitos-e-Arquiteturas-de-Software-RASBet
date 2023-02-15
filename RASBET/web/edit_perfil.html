@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile Page</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+</head>
+<body>
+  <section id="header">
+    <nav>
+      <a href="#" class="logo">
+        <img src="img\logo.png" alt="logo">
+      </a>
+      
+      <script type="text/babel">
+          
+        var socket2 = new WebSocket("ws://localhost:33333/");
+        let username2 = localStorage.getItem("username");
+        var formObject2 =  {"getNumeroNotificacoes": [username2]};
+        
+        socket2.addEventListener('open', (event) => {
+          socket2.send(JSON.stringify(formObject2));
+          
+        });
+        
+        
+        
+        socket2.addEventListener('message', (event2) => {
+          
+          
+        
+          let numeroNotificacoes = JSON.parse(event2.data);
+          console.log(numeroNotificacoes);
+          
+          
+
+
+
+          class App extends React.Component {
+          constructor(props) {
+            super(props)
+            this.state = { 
+               novasNotificacoes: numeroNotificacoes.num_notif
+             };
+
+            }
+
+            irNotificacoes(){
+            location.replace('notificacao.html');
+            }
+            irHome(){
+            location.replace('page_apostador.html');
+            }
+            irAbout(){
+            location.replace('about.html');
+            }
+            irPerfil(){
+            location.replace('perfil.html');
+            }
+            irLogout(){
+            localStorage.removeItem('username');
+            location.replace('index.html');
+            }
+          
+            render() {
+        
+            return (
+            <ul className="menu" >
+              <li><a href="#" onclick="location.replace('page_apostador.html');" onClick={() => this.irHome()}>Home</a></li>
+              <li><a href="#" onclick="location.replace('about.html');" onClick={() => this.irAbout()} >About</a></li>
+              <li><a href="#" onclick="location.replace('perfil.html');" onClick={() => this.irPerfil()} className="active" >Perfil</a></li>
+              <li><a href="#" onclick="localStorage.removeItem('username');location.replace('index.html');" onClick={() => this.irLogout()} >Logout</a></li>
+              <button type="button" className="icon-button" onClick={() => this.irNotificacoes()}  >
+                <span className="material-icons">notifications</span>
+                {this.state.novasNotificacoes != 0 
+                  ? <span className="icon-button__badge">{this.state.novasNotificacoes}</span>
+                  :null
+                }
+                
+              </button>
+            </ul>);
+            }
+          }
+          
+          ReactDOM.render(<App />, document.getElementById('menu3'));
+        });
+      </script>
+      <div class="menu3" id="menu3">
+        
+      </div>
+    </nav>
+  </section>
+
+    <section class="info_po">
+        
+            
+            <script type="text/babel">
+
+              const username = localStorage.getItem("username");
+
+              const socket = new WebSocket("ws://localhost:33333/");
+      
+              var formObject =  {"getInfo": [localStorage.getItem("username")]};
+              
+              socket.addEventListener('open', (event) => {
+                  socket.send(JSON.stringify(formObject));
+              });
+  
+  
+  
+                socket.addEventListener('message', (event) => {
+                    console.log('Message from server ', event.data);
+                    
+                    let obj = JSON.parse(event.data);
+                    
+                    
+                    class App extends React.Component {
+                        constructor(props) {
+                          super(props)
+                          this.state = { 
+                            perfil: obj
+                           };
+                           this.handleSubmit = this.handleSubmit.bind(this)
+                        }
+                        
+                        handleChange(e,i) {
+                          let perfil = this.state.perfil;
+                          console.log(perfil);
+
+                      
+                          if(e.target.value == "") 
+                              perfil.info[i]= obj.info[i];
+                          else
+                              perfil.info[i]= e.target.value;
+                          this.setState({ perfil : perfil });
+                          console.log(perfil);
+                        }
+                      
+
+
+                        handleSubmit(evente) {
+                          
+                          
+                          evente.preventDefault();
+                          let perfil = this.state.perfil;
+                          var socket = new WebSocket("ws://localhost:33333/");
+                          
+
+                            let resposta = {
+                              "editarPerfil":[perfil.info[0],perfil.info[2],perfil.info[3],perfil.info[4],perfil.info[5],perfil.info[1]]
+                            }
+                        
+                            socket.addEventListener('open', (event) => {
+                              socket.send(JSON.stringify(resposta));
+                            })
+                          
+                            socket.addEventListener('message', (event) => {
+                            let mensagem = JSON.parse(event.data);
+                          
+                            if(mensagem.validate){
+                                alert("Perfil atualizado com sucesso")
+                                obj = perfil;
+                                this.setState(({
+                                  perfil: perfil
+                                }));
+                            }
+                          });
+                        }
+
+                        onClickVoltar(){
+                          location.replace('informacoes.html');
+
+                        }
+
+                      
+           
+                      
+                        render() {
+                          return (
+                                <form className="editInfos" onSubmit={this.handleSubmit}>
+                                    <field className='textInfos'> 
+                                      <label for="fname"> Username: </label>
+                                      <input type="text" placeholder={this.state.perfil.info[0]}id="username" onChange={e => this.handleChange(e,0)} disabled/>
+                                    </field>
+
+                                    <field className='textInfos'> 
+                                      <label for="fname"> Nome: </label>
+                                      <input type="text" placeholder={this.state.perfil.info[2]} id="nome" onChange={e => this.handleChange(e,2)} />
+                                    </field>
+
+                                    <field className='textInfos'> 
+                                    <label for="fname"> Email: </label>
+                                    <input type="email" placeholder={this.state.perfil.info[3]} id="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" title="Three letter country" onChange={e => this.handleChange(e,3)}/>
+                                    </field>
+
+                                    <field className='textInfos'> 
+                                      <label for="fname"> Morada: </label>
+                                      <input type="text" placeholder={this.state.perfil.info[4]} id="morada" onChange={e => this.handleChange(e,4)} />
+                                    </field>
+
+                                    <field className='textInfos'> 
+                                      <label for="fname"> Telemóvel: </label>
+                                      <input type="text" placeholder={this.state.perfil.info[5]} id="phone" pattern="[0-9]{9}" onChange={e => this.handleChange(e,5)}/>
+                                    </field>
+
+                                    <field className='textInfos'> 
+                                      <label for="fname"> Data de Nascimento</label>
+                                      <input type="text" placeholder={this.state.perfil.info[6]} id="dt" disabled />
+                                    </field>
+
+                                    <field className='textInfos'> 
+                                      <label for="fname"> CC:</label>
+                                      <input type="text" placeholder={this.state.perfil.info[7]} id="cc" disabled/>
+                                    </field>
+
+                                    <field className='textInfos'> 
+                                      <label for="fname"> NIF:</label>
+                                      <input type="text" placeholder={this.state.perfil.info[8]} id="nif" disabled/>
+                                    </field>
+
+                                    <field className='textInfos'> 
+                                      <label for="fname"> Password:</label>
+                                      <input type="password" placeholder={this.state.perfil.info[1]} id="password" onChange={e => this.handleChange(e,1)} />
+                                    </field>
+
+                                    <button className="button_submit" type="submit" >Guardar</button>
+                                    <button className="button_submit" type="button" onClick={() => this.onClickVoltar()}>Voltar</button>
+                                </form>
+                          );
+                        }
+                      }
+                      ReactDOM.render(<App />, document.getElementById('container_info'));
+                });
+            </script>
+          <div id="container_info" class="container_info">
+              <!-- This element's contents will be replaced with your component. -->
+          </div>
+        </div>
+      </section>
+</body>
+</html>

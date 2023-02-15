@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RASBET Profile</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+    <section id="header">
+        <nav>
+            <a href="#" class="logo">
+              <img src="img\logo.png" alt="logo">
+            </a>
+            
+            <script type="text/babel">
+                    
+                var socket2 = new WebSocket("ws://localhost:33333/");
+                let username2 = localStorage.getItem("username");
+                var formObject2 =  {"getNumeroNotificacoes": [username2]};
+                
+                socket2.addEventListener('open', (event) => {
+                    socket2.send(JSON.stringify(formObject2));
+                    
+                });
+                
+                
+                
+                socket2.addEventListener('message', (event2) => {
+                    
+                    
+                
+                    let numeroNotificacoes = JSON.parse(event2.data);
+                    console.log(numeroNotificacoes);
+                    
+                    
+
+
+
+                  class App extends React.Component {
+                    constructor(props) {
+                        super(props)
+                        this.state = { 
+                           novasNotificacoes: numeroNotificacoes.num_notif
+                         };
+
+                      }
+
+                      irNotificacoes(){
+                        location.replace('notificacao.html');
+                      }
+                      irHome(){
+                        location.replace('page_apostador.html');
+                      }
+                      irAbout(){
+                        location.replace('about.html');
+                      }
+                      irPerfil(){
+                        location.replace('perfil.html');
+                      }
+                      irLogout(){
+                        localStorage.removeItem('username');
+                        location.replace('index.html');
+                      }
+                    
+                      render() {
+                
+                        return (
+                        <ul className="menu" >
+                            <li><a href="#" onclick="location.replace('page_apostador.html');" onClick={() => this.irHome()} >Home</a></li>
+                            <li><a href="#" onclick="location.replace('about.html');" onClick={() => this.irAbout()} >About</a></li>
+                            <li><a href="#" onclick="location.replace('perfil.html');" onClick={() => this.irPerfil()} className="active" >Perfil</a></li>
+                            <li><a href="#" onclick="localStorage.removeItem('username');location.replace('index.html');" onClick={() => this.irLogout()} >Logout</a></li>
+                            <button type="button" className="icon-button" onClick={() => this.irNotificacoes()}  >
+                                <span className="material-icons">notifications</span>
+                                {this.state.novasNotificacoes != 0 
+                                    ? <span className="icon-button__badge">{this.state.novasNotificacoes}</span>
+                                    :null
+                                }
+                                
+                            </button>
+                        </ul>);
+                      }
+                    }
+                    
+                    ReactDOM.render(<App />, document.getElementById('menu3'));
+                });
+            </script>
+
+            <div class="menu3" id="menu3">
+                
+            </div>
+        </nav>
+    </section>
+    <section id="Dados" class="ops">
+        <script type="text/babel">
+            const username = localStorage.getItem("username");
+
+            const socket = new WebSocket("ws://localhost:33333/");
+    
+            var formObject =  {"getInfo": [localStorage.getItem("username")]};
+            
+            socket.addEventListener('open', (event) => {
+                socket.send(JSON.stringify(formObject));
+            });
+
+
+            socket.addEventListener('message', (event) => {
+                console.log('Message from server ', event.data);
+                let obj = JSON.parse(event.data);
+                var Hello = React.createClass({
+
+                    getInitialState: function() {
+                        return {message: 'perfil.html'};
+                      },
+                    
+                      handleClick: function() {
+                        location.replace(this.state.message);
+                      },
+                      handleClickImage: function() {
+                        location.replace("edit_perfil.html");
+                      },
+                    render: function() {
+                        return <div>
+                            <ul class="infos">
+                                <img src="img\edit.png" className="imagemEdit" onClick={this.handleClickImage}/>
+                                <li><a >Username: {obj.info[0]}</a></li>
+                                <li><a >Password: {obj.info[1]}</a></li>
+                                <li><a >Mail: {obj.info[2]}</a></li>
+                                <li><a >Nome: {obj.info[3]}   </a></li>
+                                <li><a >Morada: { obj.info[4]}   </a></li>
+                                <li><a >Número de telemóvel: {obj.info[5] }</a></li>
+                                <li><a >NIF: { obj.info[6]}</a></li>
+                                <li><a >Número de CC: { obj.info[7]}</a></li>
+                                <li><a >Data de Nascimento: {obj.info[8] }</a></li>
+                                <li><a >Dinheiro: {obj.info[9]}</a></li>
+                                <li><p style={{color:  "#4070f4",cursor: "pointer"}} onClick={this.handleClick}>
+                                    Voltar
+                                </p></li>
+                            </ul> 
+
+                        </div>;
+                    }
+                });
+                //<Aposta username={obj.info[0]} password={obj.info[1]}  nome ={obj.info[2]} mail={obj.info[3]} morada={obj.info[4]} n_phone={obj.info[5]} NIF={obj.info[6]} cc={obj.info[7]} dn={obj.info[8]} dinheiro/>
+                ReactDOM.render(<Hello />, document.getElementById('container'));
+        
+            });
+             // console.log(document.getElementById("homeoddf03db53acb1492a8930663127323502e"))
+          </script>
+        
+        <div id="container" class="container2">
+            <!-- This element's contents will be replaced with your component. -->
+        </div>
+    </section>
+</body>
+</html>

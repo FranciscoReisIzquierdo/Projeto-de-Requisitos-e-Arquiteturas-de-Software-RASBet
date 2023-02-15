@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <title>Notification Form</title>
+    <link rel="stylesheet" href="css/style.css" >
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section id="header">
+        <nav>
+            <a href="#" class="logo">
+                <img src="img\logo.png" alt="logo">
+            </a>
+            <ul class="menu">
+                <li><a href="#" onclick="location.replace('page_admin.html');" >Home</a></li>
+                <li><a href="#" onclick="location.replace('criarNotificacao.html');" class="active">Notificações</a></li>
+                <li><a href="#" onclick="localStorage.removeItem('username');location.replace('index.html');">Logout</a></li>
+            </ul>
+        </nav>
+    </section>
+    <form id="form_notificacao" class="form_notificacao" method="post">
+            <h1> Vou dar display aos jogos</h1>
+        
+        <p>Título</p>
+        <textarea class="tarea" rows="2" id = "tituloNotificacao"></textarea>
+        <p>Conteúdo</p>
+        <textarea class="tarea" rows="12" id = "textoNotificacao"></textarea>
+        <p></p>
+        <button class="button_create_notificacao" type="submit" >Publicar</button>
+    </form>
+    <script src="js\criarNotificao.js"></script>
+</body>
+</html>

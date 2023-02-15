@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <title>Payment Form</title>
+    <link rel="stylesheet" href="css/style_payment.css" >
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script> 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <section id="header">
+        <nav>
+            <a href="#" class="logo">
+                <img src="img\logo.png" alt="logo" onclick="location.replace('page_apostador.html');">
+            </a>
+            <script type="text/babel">
+						
+                var socket2 = new WebSocket("ws://localhost:33333/");
+                let username2 = localStorage.getItem("username");
+                var formObject2 =  {"getNumeroNotificacoes": [username2]};
+                
+                socket2.addEventListener('open', (event) => {
+                    socket2.send(JSON.stringify(formObject2));
+                    
+                });
+                
+                socket2.addEventListener('message', (event2) => {
+
+                    let numeroNotificacoes = JSON.parse(event2.data);
+                    console.log(numeroNotificacoes);
+
+                  class App extends React.Component {
+                    constructor(props) {
+                        super(props)
+                        this.state = { 
+                           novasNotificacoes: numeroNotificacoes.num_notif
+                         };
+
+                      }
+
+                      irNotificacoes(){
+                        location.replace('notificacao.html');
+                      }
+                      irHome(){
+                        location.replace('page_apostador.html');
+                      }
+                      irAbout(){
+                        location.replace('about.html');
+                      }
+                      irPerfil(){
+                        location.replace('perfil.html');
+                      }
+                      irLogout(){
+                        localStorage.removeItem('username');
+                        location.replace('index.html');
+                      }
+                    
+                      render() {
+                
+                        return (
+                        <ul className="menu" >
+                            <li><a href="#" onclick="location.replace('page_apostador.html');" onClick={() => this.irHome()} >Home</a></li>
+                            <li><a href="#" onclick="location.replace('about.html');" onClick={() => this.irAbout()} >About</a></li>
+                            <li><a href="#" onclick="location.replace('perfil.html');" onClick={() => this.irPerfil()} className="active" >Perfil</a></li>
+                            <li><a href="#" onclick="localStorage.removeItem('username');location.replace('index.html');" onClick={() => this.irLogout()} >Logout</a></li>
+                            <button type="button" className="icon-button" onClick={() => this.irNotificacoes()}  >
+                                <span className="material-icons">notifications</span>
+                                {this.state.novasNotificacoes != 0 
+                                    ? <span className="icon-button__badge">{this.state.novasNotificacoes}</span>
+                                    :null
+                                }
+                                
+                            </button>
+                        </ul>);
+                      }
+                    }
+                    
+                    ReactDOM.render(<App />, document.getElementById('menu3'));
+                });
+            </script>
+            <div class="menu3" id="menu3">
+					
+            </div>
+        </nav>
+    </section>
+    <form id="form_payment" class="form_payment" method="post">
+    <div class="container" >
+        <h1>Confirm Your Payment</h1>
+        <div id="mc" >
+            <div class="first-row">
+                <div class="owner" >
+                    <h3>Owner</h3>
+                    <div class="input-field">
+                        <input type="text">
+                    </div>
+                </div>
+                <div class="cvv">
+                    <h3>CVV</h3>
+                    <div class="input-field">
+                        <input type="password">
+                    </div>
+                </div>
+            </div>
+            <div class="second-row">
+                <div class="card-number">
+                    <h3>Card Number</h3>
+                    <div class="input-field">
+                        <input type="text">
+                    </div>
+                </div>
+
+            </div>
+            <div class="third-row">
+                <h3>Expiration date</h3>
+                <div class="selection">
+                    <div class="date">
+                        <select name="months" id="months">
+                            <option value="Jan">Jan</option>
+                            <option value="Feb">Feb</option>
+                            <option value="Mar">Mar</option>
+                            <option value="Apr">Apr</option>
+                            <option value="May">May</option>
+                            <option value="Jun">Jun</option>
+                            <option value="Jul">Jul</option>
+                            <option value="Aug">Aug</option>
+                            <option value="Sep">Sep</option>
+                            <option value="Oct">Oct</option>
+                            <option value="Nov">Nov</option>
+                            <option value="Dec">Dec</option>
+                          </select>
+                          <select name="years" id="years">
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>
+                            <option value="2015">2015</option>
+                          </select>
+                    </div>
+                </div>   
+            </div>
+        </div>
+        <div id="pp" hidden >
+            <div class="first-row">
+                <div class="owner" >
+                    <h3>Email</h3>
+                    <div class="input-field">
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="second-row">
+                <div class="cvv">
+                    <h3>Password</h3>
+                    <div class="input-field">
+                        <input type="password">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="mb" hidden>
+            <div class="first-row">
+                <div class="owner">
+                    <h3>Telemóvel</h3>
+                    <div class="input-field">
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cards">
+            <img src="img\mc.png" alt="" class="mcButton" onclick="paymc()">
+            <img src="img\mb.png" alt="" class="mbWayButton" onclick="paymb()" >
+            <img src="img\pp.png" alt="" class="PPButton" onclick="paypp()">
+        </div>
+
+        
+            <div class="pagar">
+                <input type="number" placeholder="Quantidade" id="quantidade" >
+            </div>
+            <button id="btn" type="submit">Confirmar</button>
+        </form>
+
+        
+    </div>
+    <script src="js\payment.js"></script>
+</body>
+</html>

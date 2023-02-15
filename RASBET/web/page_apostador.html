@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<link rel="icon" type="image/png" href="img/favicon.png">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>RASBET Home Page</title>
+		<link rel="stylesheet" href="css/style.css"/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script> 
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	
+	</head>
+	<body>
+		<section id="header">
+			<nav>
+				<a href="#" class="logo">
+				  <img src="img\logo.png" alt="logo">
+				</a>
+				
+				<script type="text/babel">
+						
+					var socket2 = new WebSocket("ws://localhost:33333/");
+					let username2 = localStorage.getItem("username");
+					var formObject2 =  {"getNumeroNotificacoes": [username2]};
+					
+					socket2.addEventListener('open', (event) => {
+						socket2.send(JSON.stringify(formObject2));
+						
+					});
+
+					socket2.addEventListener('message', (event2) => {
+						let numeroNotificacoes = JSON.parse(event2.data);
+						console.log(numeroNotificacoes);
+
+					  class App extends React.Component {
+						constructor(props) {
+							super(props)
+							this.state = { 
+							   novasNotificacoes: numeroNotificacoes.num_notif
+							 };
+
+						  }
+	
+						  irNotificacoes(){
+							location.replace('notificacao.html');
+						  }
+						  irHome(){
+							location.replace('page_apostador.html');
+						  }
+						  irAbout(){
+							location.replace('about.html');
+						  }
+						  irPerfil(){
+							location.replace('perfil.html');
+						  }
+						  irLogout(){
+							localStorage.removeItem('username');
+							location.replace('index.html');
+						  }
+						
+						  render() {
+					
+							return (
+							<ul className="menu" >
+								<li><a href="#" onclick="location.replace('page_apostador.html');" onClick={() => this.irHome()} className="active">Home</a></li>
+								<li><a href="#" onclick="location.replace('about.html');" onClick={() => this.irAbout()} >About</a></li>
+								<li><a href="#" onclick="location.replace('perfil.html');" onClick={() => this.irPerfil()} >Perfil</a></li>
+								<li><a href="#" onclick="localStorage.removeItem('username');location.replace('index.html');" onClick={() => this.irLogout()} >Logout</a></li>
+								<button type="button" className="icon-button" onClick={() => this.irNotificacoes()}  >
+									<span className="material-icons">notifications</span>
+									{this.state.novasNotificacoes != 0 
+										? <span className="icon-button__badge">{this.state.novasNotificacoes}</span>
+										:null
+									}
+									
+								</button>
+							</ul>);
+						  }
+						}
+						ReactDOM.render(<App />, document.getElementById('menu3'));
+					});
+				</script>
+
+				<div class="menu3" id="menu3">
+					
+				</div>
+			</nav>
+		</section>
+		<section id="games">
+			<form id="form_aposta" class="form_aposta" method="post">
+				<h1> Jogos Atuais </h1>
+			<script type="text/babel">
+				var socket = new WebSocket("ws://localhost:33333/");
+				let username = localStorage.getItem("username");
+				var formObject =  {"listaJogos": [username,'Futebol']};
+				
+				
+
+
+				socket.addEventListener('open', (event) => {
+				    socket.send(JSON.stringify(formObject));
+				});
+				
+				
+				
+				socket.addEventListener('message', (event) => {
+				    console.log('Message from server ', event.data);
+				    
+				
+				    let obj = JSON.parse(event.data);
+				    
+				    let obj_plus = JSON.parse(JSON.stringify(obj));
+				    //console.log('Message from server ', dados);
+
+					let seguidores_init = [];
+
+					for(let i = 0; i<obj.length;i++){
+						let tmp = []
+						for(let j = 0; j<obj[i].seguidores.length;j++){
+							tmp.push(obj[i].seguidores[j].username);
+						}
+						seguidores_init[i] = tmp;
+					}
+
+					
+					console.log(seguidores_init);
+				
+				  class App extends React.Component {
+				      constructor(props) {
+				        super(props)
+				        this.state = { 
+				           formValues: JSON.parse(JSON.stringify(obj_plus)),
+				           formBets: [],
+				           predictions: [],
+				           quantidade_total: 0,
+				           odd_total: 1,
+						   seguidores: seguidores_init
+				         };
+				        this.handleSubmit = this.handleSubmit.bind(this)
+				      }
+				      
+				      handleChange(e) {
+				        let formValues = this.state.formValues;
+				        let quantidade_total = this.state.quantidade_total;
+				        var allIds = this.state.formBets.map(obj=>obj.id);
+				        console.log(allIds);
+				        let quantidade= e.target.value;
+				        quantidade_total = parseFloat(quantidade);
+				
+				        this.setState({ 
+				          formValues,
+				          quantidade_total
+				        });
+				      }
+				    
+				      addFormFields(i,e,mode) {
+				        let aposta = this.state.formValues[i];
+                			if(!this.state.formBets.some(item => item.id === aposta.id) && this.state.formBets.length< 20){
+								let prediction = "";
+								let odd_total = this.state.odd_total;
+				
+								switch (mode) {
+								case 1:
+									prediction = aposta.homeTeam;
+									odd_total *= aposta.oddHome + aposta.promocao;
+									break;
+								case 2:
+									prediction = "Draw";
+									odd_total *= aposta.oddTie + aposta.promocao;
+									break;
+								case 3:
+									prediction = aposta.awayTeam ;
+									odd_total *= aposta.oddAway + aposta.promocao;
+									break;
+								default:
+									break;
+								}
+								this.setState(({
+								formBets: [...this.state.formBets, aposta],
+								predictions: [...this.state.predictions, prediction],
+								odd_total
+								}))
+                			} else {
+								(this.state.formBets.length>=20) ? alert("Maximo 20 Partidas por Aposta!") : alert("Partida já escolhida!")
+							}
+				    	}
+
+					seguirJogo(i) {
+						let formValues = this.state.formValues;
+						let idPartida = formValues[i].id;
+						let seguidores = this.state.seguidores
+						seguidores[i].push(localStorage.getItem('username'));
+						
+						var socketN = new WebSocket("ws://localhost:33333/");
+						var allIds = this.state.formBets.map(obj=>obj.id);
+						let resposta = {
+						  "seguirPartida":[idPartida,localStorage.getItem('username')]
+						}
+						
+						socketN.addEventListener('open', (event) => {
+						
+				            socketN.send(JSON.stringify(resposta));
+				          })
+				        
+				          socketN.addEventListener('message', (event) => {
+				          let mensagem = JSON.parse(event.data);
+				        
+				          if(mensagem.validate){
+				              
+				              this.setState(({
+				                seguidores: seguidores
+				              }));
+							  
+				          }
+				          else{
+				            alert("Erro");
+				          }
+				        });
+					}
+
+					naoseguirJogo(i) {
+						let formValues = this.state.formValues;
+						let idPartida = formValues[i].id;
+						let seguidores = this.state.seguidores;
+						seguidores[i].splice(i, 1);
+						
+						var socketN2 = new WebSocket("ws://localhost:33333/");
+						var allIds = this.state.formBets.map(obj=>obj.id);
+						let resposta = {
+						  "naoseguirPartida":[idPartida,localStorage.getItem('username')]
+						}
+						
+						socketN2.addEventListener('open', (event) => {
+						
+				            socketN2.send(JSON.stringify(resposta));
+				          })
+				        
+				          socketN2.addEventListener('message', (event) => {
+				          let mensagem = JSON.parse(event.data);
+							
+				          if(mensagem.validate){
+				              
+				              this.setState(({
+				                seguidores: seguidores
+				              }));
+							  
+				          }
+				          else{
+				            alert("Erro");
+				          }
+				        });
+					}
+				    
+				      removeFormFields(i) {
+				        let formBets = this.state.formBets;
+				        let predictions = this.state.predictions;
+						let aposta = this.state.formValues[i];
+						let prediction = this.state.predictions[i];
+								let odd_total = this.state.odd_total;
+						if(prediction == aposta.homeTeam) odd_total /= aposta.oddHome;
+						else if(prediction == "Draw") odd_total /= aposta.oddTie;
+						else if(prediction == aposta.awayTeam) odd_total /= aposta.oddAway;
+
+				        formBets.splice(i, 1);
+				        predictions.splice(i, 1);
+				        this.setState({ 
+				          	formBets,
+				          	predictions,
+                  			odd_total
+				        });
+				      }
+				    
+				      handleSubmit(evente) {
+				        evente.preventDefault();
+				        if (this.state.predictions.length > 0 && this.state.quantidade_total > 0){
+				          var socket = new WebSocket("ws://localhost:33333/");
+				          var allIds = this.state.formBets.map(obj=>obj.id);
+				          let resposta = {
+				            "registarAposta":[localStorage.getItem('username'),allIds,this.state.predictions,this.state.quantidade_total.toString()]
+				          }
+				      
+				          socket.addEventListener('open', (event) => {
+				            socket.send(JSON.stringify(resposta));
+				          })
+				        
+				          socket.addEventListener('message', (event) => {
+				          let mensagem = JSON.parse(event.data);
+				        
+				          if(mensagem.validate){
+				              alert("Aposta realizada com sucesso")
+				              this.setState(({
+				                formBets: [],
+				                quantidade_total: 0,
+				                formValues: JSON.parse(JSON.stringify(obj_plus))
+				              }));
+							  window.location = 'page_apostador.html';
+				          }
+				          else{
+				            alert("Saldo insuficiente");
+				          }
+				        });
+				        }
+				        else {
+				          alert("Aposta Invalida!");
+				        }
+				      }
+				    
+				      render() {
+						
+				        return (
+				            <form  onSubmit={this.handleSubmit}>
+				              
+				              {this.state.formValues.map((element, index) => (
+				                <div className="form-inline" key={index}>
+				
+				                <li>
+									<div className="game">
+										{element.homeTeam} x {element.awayTeam} 
+										<p><small> {element.commenceTime.date.day}/{element.commenceTime.date.month}/{element.commenceTime.date.year} {element.commenceTime.time.hour}:{element.commenceTime.time.minute}:{element.commenceTime.time.second} 
+											{element.promocao != 0 ? "    Promoção: " + element.promocao + " !!!" : "" } </small></p>
+										
+										{!this.state.seguidores[index].includes(localStorage.getItem('username')) ? <p className="SeguirJogo" onClick={e => this.seguirJogo(index)} ><small>Seguir Jogo</small></p> : <p className="NaoSeguirJogo" onClick={e => this.naoseguirJogo(index)}><small>Parar de Seguir</small></p>}
+									</div>
+								<div class="buttons" >
+				                  <button className="button_home" type="button" style={{background: element.promocao != 0  ? "#FFD700" : null}} onClick={e => this.addFormFields(index,e,1)}>Home {element.oddHome}</button>
+				                  <button className="button_draw" type="button" style={{background: element.promocao != 0  ? "#FFD700" : null}} onClick={e => this.addFormFields(index,e,2)}>Draw {element.oddTie}</button>
+				                  <button className="button_away" type="button" style={{background: element.promocao != 0  ? "#FFD700" : null}} onClick={e => this.addFormFields(index,e,3)}>Away {element.oddAway}</button>
+								</div>
+								</li>
+								</div>
+				              ))}
+				              <div className={"Boletim"}>
+				                <h1> Apostas Selecionadas </h1>
+				                {this.state.formBets.map((element, index) => (
+				
+				                <div className="resultados" key={index}>
+				                  {element.homeTeam} x {element.awayTeam} --> {this.state.predictions[index]} {"  "}
+				                      <button type="button"  className="button_remove" onClick={() => this.removeFormFields(index)}>remove</button> 
+				                </div>
+				              ))}
+				              <h3> Odd total da aposta: {this.state.odd_total}</h3>
+				              <div className="button-section">
+				                <div class="quantity">
+				                  <input type="number" placeholder="Montante" id="quantity" onChange={e => this.handleChange(e)} />
+				                  <i class="far fa-envelope"></i>
+				                </div>
+				                <button className="button_submit" type="submit">Apostar</button>
+				              </div>
+				        </div>
+				          </form>
+				        );
+				      }
+				    }
+				    
+				    ReactDOM.render(<App />, document.getElementById('container'));
+				  });
+			</script>
+			<div id="container" class="container">
+				<!-- This element's contents will be replaced with your component. -->
+			</div>
+		</section>
+
+
+
+
+		<section class="search">
+			<div id="containerSerach" class="containerSerach">
+				
+
+			</div>
+
+			
+		<script type="text/babel">
+			var socket3 = new WebSocket("ws://localhost:33333/");
+			let username3 = localStorage.getItem("username");
+			var formObject3 =  {"getApostadores": [username3]};
+					
+			socket3.addEventListener('open', (event) => {
+				socket3.send(JSON.stringify(formObject3));		
+			});
+					
+					
+					
+			socket3.addEventListener('message', (event3) => {
+
+				let apostadores = JSON.parse(event3.data);
+				console.log("Todos os apostadores: "+JSON.stringify(apostadores));
+
+				var socket4 = new WebSocket("ws://localhost:33333/");
+				var formObject4 =  {"getApostadoresSeguidos": [username3]};
+					
+				socket4.addEventListener('open', (event4) => {
+					socket4.send(JSON.stringify(formObject4));		
+				});
+					
+					
+					
+				socket4.addEventListener('message', (event4) => {
+					let myFollowings2 = JSON.parse(event.data);
+					console.log("Meus seguidores: "+JSON.stringify(apostadores));
+					
+					var f = [];
+					for(let i = 0; i<myFollowings2.length;i++){
+						f.push(myFollowings2[i].username);
+					}
+					console.log(f);
+
+
+					class App extends React.Component {
+						constructor(props) {
+						super(props)
+						this.state = { 
+								totalUsers: apostadores ,
+								myFollowings: f,
+								usersShow: []
+						};
+						
+					}
+
+					handleChange(e) {
+						let apostadores = this.state.totalUsers;
+						let shownApostadores = [];
+						if(e.target.value != "") {
+							for(let i = 0; i < apostadores.length;i++){
+								if (apostadores[i].name.toLowerCase().includes(e.target.value.toLowerCase()) || apostadores[i].username.toLowerCase().includes(e.target.value.toLowerCase())  ) {
+									shownApostadores.push(apostadores[i]);
+								}
+
+							}
+						}
+						this.setState({ 
+						usersShow: shownApostadores
+						});
+					}
+
+					addFollowing(index){
+						alert("vou seguir");
+
+						var socket5 = new WebSocket("ws://localhost:33333/");
+						var formObject5 =  {"seguirApostador": [username3,this.state.usersShow[index].username]};
+					
+						socket5.addEventListener('open', (event5) => {
+							socket5.send(JSON.stringify(formObject5));		
+						});
+					
+					
+					
+						socket5.addEventListener('message', (event5) => {
+							let seguidores = this.state.myFollowings;
+							seguidores.push(this.state.usersShow[index].username);
+
+							this.setState({ 
+								myFollowings: seguidores
+							});
+						});
+					}
+
+					removeFollowing(index){
+						alert("vou remover");
+						var socket6 = new WebSocket("ws://localhost:33333/");
+						var formObject6 =  {"naoseguirApostador": [username3,this.state.usersShow[index].username]};
+					
+						socket6.addEventListener('open', (event6) => {
+							socket6.send(JSON.stringify(formObject6));		
+						});
+						socket6.addEventListener('message', (event6) => {
+							let seguidores = this.state.myFollowings;
+							seguidores.splice(index, 1);
+
+							this.setState({ 
+								myFollowings: seguidores
+							});
+						});
+					}
+
+					
+					render() {
+						return (
+								<div >
+								<input type="text" className="searchBar" placeholder="Search Apostadores..." onChange={e => this.handleChange(e)}/>
+								{this.state.usersShow.map((element, index) => (
+								<div className="serachApostadores" key={index}>
+										<p>Nome: {element.name}</p>
+										
+										<p>Username: {element.username}</p>
+										<p>Ganho: {element.ganho}</p>
+										{this.state.myFollowings.includes(element.username) ? <i className="fa-solid fa-circle-minus fa-2xl" onClick={e => this.removeFollowing(index)}></i> :
+											<i className="fa-solid fa-plus" onClick={e => this.addFollowing(index)}></i>
+										}
+										
+
+								</div>
+								))}
+								</div>
+								);
+						}
+					}
+					
+					ReactDOM.render(<App />, document.getElementById('containerSerach'));
+				});
+			});
+	    </script>
+		</section>
+			
+
+		
+	</body>
+</html>

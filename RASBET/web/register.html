@@ -1,0 +1,97 @@
+<!DOCTYPE Atml>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-widthl,
+    initial-scale=1.0">
+    <title>Register Form</title>
+    <link rel="stylesheet" href="css/style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <form id="form_register" class="form_login" method="post">
+            <div class="logo">
+                <a href="#" class="logo">
+                    <img src="img\logo_login.png" alt="logo">
+                </a>
+            </div>
+            
+            <h1>Registration</h1>
+        
+            <div class="username">
+                <input type="text" placeholder=" Username" id="username" required>
+                <i class="far fa-envelope"></i>
+            </div>
+
+            <div class="username">
+                <input type="text" placeholder="Nome" id="nome" required>
+                <i class="far fa-envelope"></i>
+            </div>
+
+            <div class="username">
+                <input type="email" placeholder=" Email" id="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" title="Three letter country" required>
+                <i class="far fa-envelope"></i>
+            </div>
+            <div class="username">
+                <input type="text" placeholder=" Morada" id="morada" required>
+                <i class="far fa-envelope"></i>
+            </div>
+ 
+            <div class="username">
+                <input type="text" placeholder="Número Telemóvel" id="phone" pattern="[0-9]{9}" required>
+                <i class="far fa-envelope"></i>
+            </div>
+
+            <div class="username">
+                <input type="text" placeholder="Data Nascimento" id="dt" required>
+                <i class="far fa-envelope"></i>
+            </div>
+            
+            <div class="username">
+                <input type="text" placeholder="CC" id="cc" required>
+                <i class="far fa-envelope"></i>
+            </div>
+
+            <div class="username">
+                <input type="text" placeholder="Nif" id="nif" required>
+                <i class="far fa-envelope"></i>
+            </div>
+ 
+            <div class="password">
+                <input type="password" placeholder=" Password" id="password" required>
+                <i class="fas fa-lock-open"></i>
+            </div>
+
+            <button id="btn" type="submit">Register</button>
+
+            <div class="checkbox-text">
+                <div class="checkbox-content">
+                    <input type="checkbox" id="logCheck">
+                    <label for="logCheck" class="text">Remember me</label>
+                </div>
+
+                <a href="#" class="text">Forgot password?</a>
+            </div>
+
+            <div class="login-signup">
+                <span class="text">Are you already a member?
+                    <a href="index.html"
+                     onclick="location.replace('index.html');">Login</a> 
+                </span>
+            </div>
+
+        </form>
+
+
+    </div>
+    
+    <script src="js\register.js"></script>
+    </body>
+
+</html>
